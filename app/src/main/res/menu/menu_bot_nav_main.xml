@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_beranda"
+        android:icon="@drawable/ic_beranda"
+        android:title="Beranda"/>
+    <item
+        android:id="@+id/menu_jadwal"
+        android:icon="@drawable/ic_jadwal"
+        android:title="Jadwal"/>
+</menu>
