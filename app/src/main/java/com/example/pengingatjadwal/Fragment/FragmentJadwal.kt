@@ -46,6 +46,5 @@ class FragmentJadwal: Fragment() {
 
         tabJadwal.setupWithViewPager(viewPager)
 
-
     }
 }

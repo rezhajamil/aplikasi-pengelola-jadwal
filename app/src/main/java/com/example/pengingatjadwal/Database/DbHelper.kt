@@ -14,7 +14,8 @@ class DbHelper(val context: Context) {
     lateinit var dbConfig: DbConfig
     lateinit var cursor: Cursor
 
-    fun getSemuaJadwal(): MutableList<JadwalModel> {
+    //Baca Semua Data Jadwal di DB
+    fun getallSchedule(): MutableList<JadwalModel> {
         val jadwal = mutableListOf<JadwalModel>()
 
         dbConfig = DbConfig(context)
@@ -23,7 +24,9 @@ class DbHelper(val context: Context) {
 
         cursor = db.rawQuery("select * from tbJadwal", null)
 
-        if(cursor!=null && cursor.moveToFirst()) {
+        cursor.moveToFirst()
+
+        if(cursor.count > 0) {
             do {
                 jadwal.add(
                     JadwalModel(
@@ -41,11 +44,38 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
-    fun simpanJadwalBaru(values: ContentValues) {
+    //Baca Simpan Data Jadwal Baru di DB
+    fun saveNewSchedule(values: ContentValues) {
         dbConfig = DbConfig(context)
 
         db = dbConfig.writableDatabase
 
         db.insert("tbJadwal", null, values)
+    }
+
+    //Fungsi Perbarui Data di DB
+    fun updateSchedule(id: Int, mapel: String, kelas:String, waktu: String) {
+        dbConfig = DbConfig(context)
+
+        val values = ContentValues()
+
+        values.put("mapel", mapel)
+        values.put("kelas", kelas)
+        values.put("waktu", waktu)
+        values.put("status", 0)
+        values.put("catatan", 0)
+
+        db = dbConfig.writableDatabase
+
+        db.update("tbJadwal", values, "id = ?", arrayOf(id.toString()))
+    }
+
+    //Fungsi Hapus Data dari DB
+    fun deleteSchedule(id: Int) {
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.writableDatabase
+
+        db.delete("tbJadwal", "id = ?", arrayOf(id.toString()))
     }
 }
