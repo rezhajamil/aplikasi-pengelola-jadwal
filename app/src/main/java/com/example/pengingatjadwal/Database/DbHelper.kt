@@ -6,6 +6,8 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteCursor
 import android.database.sqlite.SQLiteDatabase
 import com.example.pengingatjadwal.Model.JadwalModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DbHelper(val context: Context) {
 
@@ -15,14 +17,14 @@ class DbHelper(val context: Context) {
     lateinit var cursor: Cursor
 
     //Baca Semua Data Jadwal di DB
-    fun getallSchedule(): MutableList<JadwalModel> {
+    fun getAllSchedule(): MutableList<JadwalModel> {
         val jadwal = mutableListOf<JadwalModel>()
 
         dbConfig = DbConfig(context)
 
         db = dbConfig.readableDatabase
 
-        cursor = db.rawQuery("select * from tbJadwal", null)
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE status = 0", null)
 
         cursor.moveToFirst()
 
@@ -34,8 +36,9 @@ class DbHelper(val context: Context) {
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        cursor.getString(4).toInt(),
-                        cursor.getString(5)
+                        cursor.getString(4),
+                        cursor.getString(5).toInt(),
+                        cursor.getString(6)
                     )
                 )
             } while (cursor.moveToNext())
@@ -44,7 +47,7 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
-    //Baca Simpan Data Jadwal Baru di DB
+    //Simpan Data Jadwal Baru di DB
     fun saveNewSchedule(values: ContentValues) {
         dbConfig = DbConfig(context)
 
@@ -53,17 +56,84 @@ class DbHelper(val context: Context) {
         db.insert("tbJadwal", null, values)
     }
 
+    //Baca Semua Data di DB yang Hari Ini
+    fun getAllTodaySchedule() : MutableList<JadwalModel> {
+        val jadwal = mutableListOf<JadwalModel>()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        val hariIni = Date()
+        val formatHari = SimpleDateFormat("d-MM-yyyy")
+
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '${formatHari.format(hariIni)}' AND status != 2", null)
+
+        cursor.moveToFirst()
+
+        if (cursor.count > 0) {
+            do {
+                jadwal.add (
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5).toInt(),
+                        cursor.getString(6),
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        return jadwal
+    }
+
+    //Baca Semua Data di DB yang Riwayat
+    fun getAllHistorySchedule() : MutableList<JadwalModel> {
+        val jadwal = mutableListOf<JadwalModel>()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        val hariIni = Date()
+        val formatHari = SimpleDateFormat("d-MM-yyyy")
+
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE status = '2'", null)
+
+        cursor.moveToFirst()
+
+        if (cursor.count > 0) {
+            do {
+                jadwal.add (
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5).toInt(),
+                        cursor.getString(6),
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        return jadwal
+    }
+
     //Fungsi Perbarui Data di DB
-    fun updateSchedule(id: Int, mapel: String, kelas:String, waktu: String) {
+    fun updateSchedule(id: Int, mapel: String, kelas: String, tanggal: String,  waktu: String, status: String, catatan: String) {
         dbConfig = DbConfig(context)
 
         val values = ContentValues()
 
         values.put("mapel", mapel)
         values.put("kelas", kelas)
+        values.put("tanggal", tanggal)
         values.put("waktu", waktu)
-        values.put("status", 0)
-        values.put("catatan", 0)
+        values.put("status", status)
+        values.put("catatan", catatan)
 
         db = dbConfig.writableDatabase
 

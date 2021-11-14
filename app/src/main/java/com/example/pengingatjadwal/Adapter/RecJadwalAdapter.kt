@@ -15,7 +15,7 @@ import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.button.MaterialButton
 
-class RecJadwalAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJadwalItem: RecSemuaJadwalItem): RecyclerView.Adapter<RecJadwalAdapter.ViewHolder>(){
+class RecJadwalAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJadwalItem: RecSemuaJadwalItem, val code: Int): RecyclerView.Adapter<RecJadwalAdapter.ViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (
@@ -24,7 +24,7 @@ class RecJadwalAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJad
     )
 
 
-    override fun onBindViewHolder(holder: RecJadwalAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.setDataToView(listJadwal[position])
     }
 
@@ -32,10 +32,10 @@ class RecJadwalAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJad
 
     class ViewHolder(val v : View, val recSemuaJadwalItem: RecSemuaJadwalItem): RecyclerView.ViewHolder(v) {
 
-        val tvMapel = v.findViewById<TextView>(R.id.tv_mapel)
-        val tvJam = v.findViewById<TextView>(R.id.tv_jam)
-        val tvKelas = v.findViewById<TextView>(R.id.tv_kelas)
-        val mbtUbah = v.findViewById<MaterialButton>(R.id.mbt_ubah)
+        val tvMapel = v.findViewById<TextView>(R.id.tv_mapel_jadwal)
+        val tvJam = v.findViewById<TextView>(R.id.tv_jam_jadwal)
+        val tvKelas = v.findViewById<TextView>(R.id.tv_kelas_jadwal)
+        val mbtUbah = v.findViewById<MaterialButton>(R.id.mbt_ubah_jadwal)
 
         //Fungsi atur data dari Model
         fun setDataToView(jadwalModel: JadwalModel) {

@@ -12,7 +12,7 @@ class DbConfig(context: Context): SQLiteOpenHelper(context, "dbJadwal", null, 1)
     override fun onCreate(db: SQLiteDatabase?) {
         try {
             db!!.execSQL(
-                "CREATE TABLE tbJadwal (id INTEGER PRIMARY KEY AUTOINCREMENT, mapel TEXT, kelas TEXT, waktu TEXT, status INTEGER, catatan TEXT)"
+                "CREATE TABLE tbJadwal (id INTEGER PRIMARY KEY AUTOINCREMENT, mapel TEXT, kelas TEXT, tanggal TEXT, waktu TEXT, status INTEGER, catatan TEXT)"
             )
         } catch (e: SQLException) {
             Log.d("Kesalahan DB", "Error ${e.message}")

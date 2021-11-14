@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="Masukkan Mata Pelajaran"/>
+            android:hint="Pilih Mata Pelajaran"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,9 +40,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_kelas_tambah_jadwal"
             android:layout_width="match_parent"
+            android:inputType="text"
             android:layout_height="wrap_content"
             android:editable="false"
-            android:hint="Masukkan Kelas"/>
+            android:hint="Pilih Kelas"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,11 +56,12 @@
         android:layout_height="wrap_content" >
 
         <com.google.android.material.textfield.TextInputEditText
-           android:id="@+id/edt_waktu_tambah_jadwal"
+           android:id="@+id/edt_tanggal_tambah_jadwal"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
-            android:hint="Masukkan Waktu"/>
+            android:hint="Pilih Tanggal"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,13 +69,30 @@
         android:layout_width="0dp"
         android:layout_height="10dp"/>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_waktu_tambah_jadwal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:inputType="text"
+            android:hint="Pilih Waktu"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <View
         android:layout_width="0dp"
-        android:layout_height="20dp"/>
+        android:layout_height="25dp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_tambah_tambah_jadwal"
+        app:cornerRadius="15dp"
         android:text="Tambah"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

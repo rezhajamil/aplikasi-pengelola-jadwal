@@ -24,7 +24,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/iv_mapel_jadwal"
+                    android:id="@+id/iv_mapel_riwayat"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
@@ -36,7 +36,7 @@
                     app:srcCompat="@drawable/ic_mapel" />
 
                 <TextView
-                    android:id="@+id/tv_mapel_jadwal"
+                    android:id="@+id/tv_mapel_riwayat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -49,7 +49,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_mapel_jadwal"
+                    app:layout_constraintStart_toEndOf="@+id/iv_mapel_riwayat"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -64,7 +64,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                 <ImageView
-                    android:id="@+id/iv_jam_jadwal"
+                    android:id="@+id/iv_jam_riwayat"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
@@ -76,7 +76,7 @@
                     app:srcCompat="@drawable/ic_jam" />
 
                 <TextView
-                    android:id="@+id/tv_jam_jadwal"
+                    android:id="@+id/tv_jam_riwayat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -89,7 +89,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_jam_jadwal"
+                    app:layout_constraintStart_toEndOf="@+id/iv_jam_riwayat"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -103,7 +103,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/iv_kelas_jadwal"
+                    android:id="@+id/iv_kelas_riwayat"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
@@ -115,7 +115,7 @@
                     app:srcCompat="@drawable/ic_kelas" />
 
                 <TextView
-                    android:id="@+id/tv_kelas_jadwal"
+                    android:id="@+id/tv_kelas_riwayat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -128,17 +128,17 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_kelas_jadwal"
+                    app:layout_constraintStart_toEndOf="@+id/iv_kelas_riwayat"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbt_ubah_jadwal"
+                android:id="@+id/mbt_info_riwayat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Ubah"
+                android:text="Info"
                 app:cornerRadius="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
