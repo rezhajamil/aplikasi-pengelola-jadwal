@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteCursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
+import android.widget.Toast
 import com.example.pengingatjadwal.Model.JadwalModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +26,7 @@ class DbHelper(val context: Context) {
 
         db = dbConfig.readableDatabase
 
-        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE status = 0", null)
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE status = 0 ORDER BY tanggal ASC", null)
 
         cursor.moveToFirst()
 
@@ -37,8 +39,9 @@ class DbHelper(val context: Context) {
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        cursor.getString(5).toInt(),
-                        cursor.getString(6)
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
                     )
                 )
             } while (cursor.moveToNext())
@@ -47,6 +50,38 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
+    //Baca Semua Data Jadwal di DB Berdasarkan Hari
+    fun getAllScheduleByDay(hari: String) : MutableList<JadwalModel> {
+
+        val schedules = mutableListOf<JadwalModel>()
+
+        dbConfig = DbConfig(context)
+
+        db =dbConfig.readableDatabase
+
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE hari = '$hari' ORDER BY tanggal ASC", null)
+
+        cursor.moveToFirst()
+
+        if (cursor.count > 0) {
+            do {
+                schedules.add(
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+
+        return schedules
+    }
     //Simpan Data Jadwal Baru di DB
     fun saveNewSchedule(values: ContentValues) {
         dbConfig = DbConfig(context)
@@ -80,8 +115,9 @@ class DbHelper(val context: Context) {
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        cursor.getString(5).toInt(),
-                        cursor.getString(6),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
                     )
                 )
             } while (cursor.moveToNext())
@@ -113,8 +149,9 @@ class DbHelper(val context: Context) {
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        cursor.getString(5).toInt(),
-                        cursor.getString(6),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
                     )
                 )
             } while (cursor.moveToNext())
@@ -123,13 +160,14 @@ class DbHelper(val context: Context) {
     }
 
     //Fungsi Perbarui Data di DB
-    fun updateSchedule(id: Int, mapel: String, kelas: String, tanggal: String,  waktu: String, status: String, catatan: String) {
+    fun updateSchedule(id: Int, mapel: String, kelas: String, hari: String, tanggal: String,  waktu: String, status: String, catatan: String) {
         dbConfig = DbConfig(context)
 
         val values = ContentValues()
 
         values.put("mapel", mapel)
         values.put("kelas", kelas)
+        values.put("hari", hari)
         values.put("tanggal", tanggal)
         values.put("waktu", waktu)
         values.put("status", status)

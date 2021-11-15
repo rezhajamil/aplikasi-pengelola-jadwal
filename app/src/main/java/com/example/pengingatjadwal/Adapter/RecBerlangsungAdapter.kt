@@ -1,12 +1,8 @@
 package com.example.pengingatjadwal.Adapter
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -14,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.button.MaterialButton
+import java.text.SimpleDateFormat
+import java.util.*
 
-class RecJadwalAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJadwalItem: RecSemuaJadwalItem, val code: Int): RecyclerView.Adapter<RecJadwalAdapter.ViewHolder>(){
+class RecBerlangsungAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJadwalItem: RecSemuaJadwalItem, val code: Int): RecyclerView.Adapter<RecBerlangsungAdapter.ViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (
@@ -32,15 +30,17 @@ class RecJadwalAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJad
 
     class ViewHolder(val v : View, val recSemuaJadwalItem: RecSemuaJadwalItem): RecyclerView.ViewHolder(v) {
 
-        val tvMapel = v.findViewById<TextView>(R.id.tv_mapel_jadwal)
-        val tvJam = v.findViewById<TextView>(R.id.tv_jam_jadwal)
-        val tvKelas = v.findViewById<TextView>(R.id.tv_kelas_jadwal)
-        val mbtUbah = v.findViewById<MaterialButton>(R.id.mbt_ubah_jadwal)
+        val tvMapel = v.findViewById<TextView>(R.id.tv_mapel_berlangsung)
+        val tvJam = v.findViewById<TextView>(R.id.tv_jam_berlangsung)
+        val tvTanggal = v.findViewById<TextView>(R.id.tv_tanggal_berlangsung)
+        val tvKelas = v.findViewById<TextView>(R.id.tv_kelas_berlangsung)
+        val mbtUbah = v.findViewById<MaterialButton>(R.id.mbt_ubah_berlangsung)
 
         //Fungsi atur data dari Model
         fun setDataToView(jadwalModel: JadwalModel) {
             tvMapel.text = jadwalModel.mapel
             tvJam.text = jadwalModel.waktu
+            tvTanggal.text = jadwalModel.tanggal
             tvKelas.text = jadwalModel.kelas
 
             mbtUbah.setOnClickListener {

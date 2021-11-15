@@ -4,12 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_beranda.xml" value="0.2" />
-        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_berlangsung.xml" value="0.1" />
+        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_beranda.xml" value="0.18" />
+        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_berlangsung.xml" value="0.33" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_jadwal.xml" value="0.1" />
-        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_riwayat.xml" value="0.1" />
+        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/fragment_riwayat.xml" value="0.22" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/row_beranda.xml" value="0.18" />
-        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/row_jadwal.xml" value="0.1701492537313433" />
+        <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/row_jadwal.xml" value="0.5275590551181102" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/row_riwayat.xml" value="0.37864583333333335" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/vew_btm_sheet_tambah_jadwal.xml" value="0.22" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/layout/view_btm_sheet_catatan.xml" value="0.1" />
