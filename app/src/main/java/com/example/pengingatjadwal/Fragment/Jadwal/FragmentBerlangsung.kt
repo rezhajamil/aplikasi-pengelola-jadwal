@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.ContentValues
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +33,11 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     lateinit var rootView: View
     lateinit var fabTambah: FloatingActionButton
     lateinit var recBerlangsung: RecyclerView
+    lateinit var edtMapel: EditText
     lateinit var edtKelas: EditText
     lateinit var edtTanggal: EditText
     lateinit var edtWaktu: EditText
+    lateinit var edtHari: EditText
     lateinit var chipSemua: Chip
     lateinit var chipSenin: Chip
     lateinit var chipSelasa: Chip
@@ -50,6 +53,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     lateinit var formKalender: Calendar
     lateinit var alarmHelper: AlarmHelper
     lateinit var hari: String
+    var isAllFieldsChecked: Boolean = false
 
 
     override fun onCreateView(
@@ -139,14 +143,28 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
         val btmSheetView = LayoutInflater.from(requireContext())
             .inflate(R.layout.view_btm_sheet_tambah_jadwal, null, false)
         val btmSheetDialog = BottomSheetDialog(requireContext())
+        var isError: Boolean = false
 
-        val edtMapel = btmSheetView.findViewById<EditText>(R.id.edt_mapel_tambah_jadwal)
+        edtMapel = btmSheetView.findViewById(R.id.edt_mapel_tambah_jadwal)
         edtKelas = btmSheetView.findViewById(R.id.edt_kelas_tambah_jadwal)
         edtTanggal = btmSheetView.findViewById(R.id.edt_tanggal_tambah_jadwal)
         edtWaktu = btmSheetView.findViewById(R.id.edt_waktu_tambah_jadwal)
+        edtHari = btmSheetView.findViewById(R.id.edt_hari_tambah_jadwal)
         val mbtTambah = btmSheetView.findViewById<MaterialButton>(R.id.btn_tambah_tambah_jadwal)
 
+        edtMapel.inputType = InputType.TYPE_NULL
+        edtKelas.inputType = InputType.TYPE_NULL
+        edtTanggal.inputType = InputType.TYPE_NULL
+        edtWaktu.inputType = InputType.TYPE_NULL
+
         btmSheetDialog.setContentView(btmSheetView)
+
+        edtMapel.isClickable = true
+        edtMapel.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                selectSubject()
+            }
+        }
 
         edtKelas.isClickable = true
         edtKelas.setOnFocusChangeListener { v, hasFocus ->
@@ -174,47 +192,99 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
             edtKelas.setText(jadwalModel.kelas)
             edtTanggal.setText(jadwalModel.tanggal)
             edtWaktu.setText(jadwalModel.waktu)
-
+            edtHari.setText(jadwalModel.hari)
 
             val jadwalBaru = JadwalModel(
                 jadwalModel.id,
                 edtMapel.text.toString(),
                 edtKelas.text.toString(),
                 edtTanggal.text.toString(),
-                edtWaktu.text.toString()
+                edtWaktu.text.toString(),
             )
 
             mbtTambah.setText("Perbarui")
             mbtTambah.setOnClickListener {
-                dbHelper.updateSchedule(
-                    jadwalBaru.id,
-                    edtMapel.text.toString(),
-                    edtKelas.text.toString(),
-                    hari,
-                    edtTanggal.text.toString(),
-                    edtWaktu.text.toString(),
-                    "0",
-                    "0")
-                setRecData()
-                alarmHelper.setAlarm(0, formKalender)
-                btmSheetDialog.dismiss()
+                isAllFieldsChecked = checkAllFields()
+
+                if (isAllFieldsChecked) {
+                    dbHelper.updateSchedule(
+                        jadwalBaru.id,
+                        edtMapel.text.toString(),
+                        edtKelas.text.toString(),
+                        edtHari.text.toString(),
+                        edtTanggal.text.toString(),
+                        edtWaktu.text.toString(),
+                        "0",
+                        "0")
+                    setRecData()
+                    alarmHelper.setAlarm(0, formKalender)
+                    btmSheetDialog.dismiss()
+                }
             }
 
         } else {
             mbtTambah.setOnClickListener {
-                saveDataToDb(
-                    edtMapel.text.toString(),
-                    edtKelas.text.toString(),
-                    hari,
-                    edtTanggal.text.toString(),
-                    edtWaktu.text.toString()
-                )
-                setRecData()
-                btmSheetDialog.dismiss()
+                /*if(edtMapel.text.toString() == "") {
+                    isError = true
+                    edtMapel.setError("Wajib Diisi")
+                }
+
+                if(edtKelas.text.toString() == "") {
+                    isError = true
+                    edtKelas.setError("Wajib Diisi")
+                }
+
+                if(edtTanggal.text.toString() == "") {
+                    isError = true
+                    edtTanggal.setError("Wajib Diisi")
+                }
+
+                if(edtWaktu.text.toString() == "") {
+                    isError = true
+                    edtWaktu.setError("Wajib Diisi")
+                }*/
+
+                isAllFieldsChecked = checkAllFields()
+
+                if (isAllFieldsChecked) {
+                    saveDataToDb(
+                        edtMapel.text.toString(),
+                        edtKelas.text.toString(),
+                        hari,
+                        edtTanggal.text.toString(),
+                        edtWaktu.text.toString()
+                    )
+                    setRecData()
+                    btmSheetDialog.dismiss()
+                }
             }
         }
-
         btmSheetDialog.show()
+    }
+
+    //Fungsi Mengecek Masukan Pengguna
+    fun checkAllFields(): Boolean {
+        if (edtMapel.length() == 0) {
+            edtMapel.setError("Wajib Diisi")
+            return false
+        }
+
+        if (edtKelas.length() == 0) {
+            edtKelas.setError("Wajib Diisi")
+            return false
+        }
+
+        if (edtTanggal.length() == 0) {
+            edtTanggal.setError("Wajib Diisi")
+            return false
+        }
+
+        if (edtWaktu.length() == 0) {
+            edtWaktu.setError("Wajib Diisi")
+            return false
+        }
+
+        return true
     }
 
     //Fungsi Simpan Data ke DB
@@ -238,9 +308,22 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
         setRecData()
     }
 
+    //Fungsi Pilih Mapel
+    fun selectSubject() {
+        val mapel = arrayOf("Agama", "PPKN", "Matematika", "Bahasa Indonesia", "IPA", "IPS", "SBK", "Penjaskes", "Mulok")
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog
+            .setTitle("Pilih Kelas")
+            .setItems(mapel) { dialog, position ->
+                Toast.makeText(requireContext(), mapel[position], Toast.LENGTH_SHORT).show()
+                edtMapel.setText(mapel[position].toString())
+            }
+            .show()
+    }
+
     //Fungsi Pilih Kelas
     fun selectClass() {
-        val kelas = arrayOf("Kelas 1-A", "Kelas 1-B")
+        val kelas = arrayOf("Kelas 1-A", "Kelas 1-B", "Kelas 1-C", "Kelas 1-D", "Kelas 2-A", "Kelas 2-B", "Kelas 2-C", "Kelas 2-D", "Kelas 3-A", "Kelas 3-B", "Kelas 3-C", "Kelas 3-D", "Kelas 4-A", "Kelas 4-B", "Kelas 4-C", "Kelas 4-D", "Kelas 5-A", "Kelas 5-B", "Kelas 5-C", "Kelas 5-D", "Kelas 6-A", "Kelas 6-B", "Kelas 6-C", "Kelas 6-D")
         val dialog = AlertDialog.Builder(requireContext())
         dialog
             .setTitle("Pilih Kelas")
@@ -255,19 +338,22 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     fun selectDate() {
         val kalender = Calendar.getInstance()
 
-        val datePicker = DatePickerDialog(requireContext(), {view, year, month, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog(requireContext(), {view, year, month, dayOfMonth ->
             val simpleDateFormat = SimpleDateFormat("EEEE")
             val tanggal = Date(year, month, dayOfMonth - 1)
             val hariString = simpleDateFormat.format(tanggal)
 
             edtTanggal.setText("$dayOfMonth-${month+1}-$year")
             hari = hariString
+            edtHari.setText(hariString)
+
             formKalender[Calendar.DAY_OF_MONTH] = dayOfMonth
             formKalender[Calendar.MONTH] = month
             formKalender[Calendar.YEAR] = year
         },  kalender.get(Calendar.YEAR), kalender.get(Calendar.MONTH), kalender.get(Calendar.DATE))
 
-        datePicker.show()
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis()
+        datePickerDialog.show()
     }
 
     //Fungsi Pilih Waktu

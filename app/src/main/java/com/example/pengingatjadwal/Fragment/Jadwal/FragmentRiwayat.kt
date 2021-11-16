@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.SearchView
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,7 @@ import com.example.pengingatjadwal.Database.DbHelper
 import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlin.math.tan
 
 class FragmentRiwayat: Fragment(), RecSemuaJadwalItem {
 
@@ -22,6 +25,7 @@ class FragmentRiwayat: Fragment(), RecSemuaJadwalItem {
     lateinit var rootView: View
     lateinit var recRiwayat: RecyclerView
     lateinit var llKosong: LinearLayout
+    lateinit var srcViewRiwayat: androidx.appcompat.widget.SearchView
 
     //Variabel
     lateinit var recAdapter: RecRiwayatAdapter
@@ -49,8 +53,28 @@ class FragmentRiwayat: Fragment(), RecSemuaJadwalItem {
 
         recRiwayat= rootView.findViewById(R.id.rec_riwayat)
         llKosong = rootView.findViewById(R.id.ll_jadwal_kosong_riwayat)
+        srcViewRiwayat = rootView.findViewById(R.id.src_view_jadwal_riwayat)
 
         listRiwayatJadwal = dbHelper.getAllHistorySchedule()
+
+        //Fungsi Pada Search View
+        srcViewRiwayat.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                searchHistorySchedule(newText!!)
+                setRecData()
+                return false
+            }
+
+        })
+    }
+
+    //Fungsi Mencari Riwayat Jadwal
+    fun searchHistorySchedule(kelas: String) {
+        listRiwayatJadwal = dbHelper.searchSchedule(kelas)
     }
 
     //Fungsi Mendapatkan Riwayat Jadwal

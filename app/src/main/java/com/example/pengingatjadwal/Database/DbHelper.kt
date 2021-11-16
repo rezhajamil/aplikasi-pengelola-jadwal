@@ -50,6 +50,38 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
+    //Cari Data Jadwal di DB
+    fun searchSchedule(kelas: String): MutableList<JadwalModel> {
+        val jadwal = mutableListOf<JadwalModel>()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE status = 2 AND kelas LIKE '%' || '${kelas}' || '%' ", null)
+
+        cursor.moveToFirst()
+
+        if(cursor.count > 0) {
+            do {
+                jadwal.add(
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+
+        return jadwal
+    }
+
     //Baca Semua Data Jadwal di DB Berdasarkan Hari
     fun getAllScheduleByDay(hari: String) : MutableList<JadwalModel> {
 
@@ -59,7 +91,7 @@ class DbHelper(val context: Context) {
 
         db =dbConfig.readableDatabase
 
-        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE hari = '$hari' ORDER BY tanggal ASC", null)
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE hari = '$hari' AND status = 0 ORDER BY tanggal ASC", null)
 
         cursor.moveToFirst()
 
@@ -132,9 +164,6 @@ class DbHelper(val context: Context) {
         dbConfig = DbConfig(context)
 
         db = dbConfig.readableDatabase
-
-        val hariIni = Date()
-        val formatHari = SimpleDateFormat("d-MM-yyyy")
 
         cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE status = '2'", null)
 
