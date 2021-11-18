@@ -33,6 +33,9 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     lateinit var recAdapter: RecBerandaAdapter
     lateinit var dbHelper: DbHelper
     lateinit var listJadwalSekarang: MutableList<JadwalModel>
+    val formatNamaHari = SimpleDateFormat("EEEE")
+    val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
+    val hariIni = Date()
 
 
     override fun onCreateView(
@@ -52,10 +55,6 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
 
     //Fungsi Inisialisasi View
     private fun initView() {
-        val hariIni = Date()
-        val formatNamaHari = SimpleDateFormat("EEEE")
-        val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
-
         dbHelper = DbHelper(requireContext())
         recBeranda = rootView.findViewById(R.id.rec_beranda)
         tvHari = rootView.findViewById(R.id.tv_hari_beranda)
@@ -64,7 +63,7 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
 
         recBeranda.layoutManager = LinearLayoutManager(requireContext())
 
-        tvHari.text = "${formatNamaHari.format(hariIni)}"
+        setDayName()
         tvTanggal.text = "${formatTanggal.format(hariIni)}"
     }
 
@@ -82,6 +81,18 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     //Fungsi Mengambil Data Jadwal Hari Ini dari DB
     fun getTodaySchedule() {
         listJadwalSekarang = dbHelper.getAllTodaySchedule()
+    }
+
+    //Fungsi Ubah Nama Hari
+    fun setDayName() : String {
+        var hari: String = ""
+
+        if (formatNamaHari.format(hariIni).equals("Monday")) { tvHari.text = "Senin" }
+        if (formatNamaHari.format(hariIni).equals("Tuesday")) { tvHari.text = "Selasa" }
+        if (formatNamaHari.format(hariIni).equals("Wednesday")) { tvHari.text = "Rabu" }
+        if (formatNamaHari.format(hariIni).equals("Thursday")) { tvHari.text = "Kamis" }
+        if (formatNamaHari.format(hariIni).equals("Friday")) { tvHari.text = "Jumat" }
+        return hari
     }
 
     //Fungsi Hapus Data (sumber: Interface)

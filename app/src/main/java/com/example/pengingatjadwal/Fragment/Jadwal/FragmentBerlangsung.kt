@@ -4,11 +4,15 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.ContentValues
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.provider.AlarmClock
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -27,8 +31,13 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
+
+
+
+
+class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
     //Variabel View
     lateinit var rootView: View
     lateinit var fabTambah: FloatingActionButton
@@ -54,6 +63,8 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     lateinit var alarmHelper: AlarmHelper
     lateinit var hari: String
     var isAllFieldsChecked: Boolean = false
+    lateinit var jadwalModel: JadwalModel
+
 
 
     override fun onCreateView(
@@ -92,7 +103,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
 
 
         setRecData()
-        cekJadwalKosong()
+        checkEmptySchedule()
 
         fabTambah = rootView.findViewById(R.id.fab_tambah_jadwal)
         fabTambah.setOnClickListener {
@@ -106,10 +117,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
             setRecData()
         }
 
-        chipSenin.setOnClickListener {
-            Toast.makeText(requireContext(), "Chip Senin", Toast.LENGTH_SHORT).show()
-            scheduleMonday()
-        }
+        chipSenin.setOnClickListener { scheduleMonday() }
         chipSelasa.setOnClickListener { scheduleTuesday() }
         chipRabu.setOnClickListener { scheduleWednesday() }
         chipKamis.setOnClickListener { scheduleThursday() }
@@ -130,7 +138,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     }
 
     //Fungsi Cek Jadwal Kosong
-    fun cekJadwalKosong() {
+    fun checkEmptySchedule() {
         if (listJadwal.size == 0) {
             llKosong.visibility = View.VISIBLE
         } else {
@@ -138,12 +146,19 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
         }
     }
 
+    //Fungsi Hapus Jadwal Saat Lewat Waktunya
+    //TODO 1
+    fun deletePastSchedule() {
+        listJadwal = dbHelper.getAllSchedule()
+        recAdapter = RecBerlangsungAdapter(listJadwal, this, 2)
+
+    }
+
     //Fungsi Membuat BottomSheet Dialog untuk Menambahkan Data
     fun addDataDialog(jadwalModel: JadwalModel) {
         val btmSheetView = LayoutInflater.from(requireContext())
             .inflate(R.layout.view_btm_sheet_tambah_jadwal, null, false)
         val btmSheetDialog = BottomSheetDialog(requireContext())
-        var isError: Boolean = false
 
         edtMapel = btmSheetView.findViewById(R.id.edt_mapel_tambah_jadwal)
         edtKelas = btmSheetView.findViewById(R.id.edt_kelas_tambah_jadwal)
@@ -176,14 +191,14 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
         edtTanggal.isClickable = true
         edtTanggal.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                selectDate()
+                selectDateMaterial()
             }
         }
 
         edtWaktu.isClickable = true
         edtWaktu.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                selectTime()
+                selectTimeMaterial()
             }
         }
 
@@ -224,25 +239,6 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
 
         } else {
             mbtTambah.setOnClickListener {
-                /*if(edtMapel.text.toString() == "") {
-                    isError = true
-                    edtMapel.setError("Wajib Diisi")
-                }
-
-                if(edtKelas.text.toString() == "") {
-                    isError = true
-                    edtKelas.setError("Wajib Diisi")
-                }
-
-                if(edtTanggal.text.toString() == "") {
-                    isError = true
-                    edtTanggal.setError("Wajib Diisi")
-                }
-
-                if(edtWaktu.text.toString() == "") {
-                    isError = true
-                    edtWaktu.setError("Wajib Diisi")
-                }*/
 
                 isAllFieldsChecked = checkAllFields()
 
@@ -255,6 +251,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
                         edtWaktu.text.toString()
                     )
                     setRecData()
+                    checkEmptySchedule()
                     btmSheetDialog.dismiss()
                 }
             }
@@ -262,8 +259,20 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
         btmSheetDialog.show()
     }
 
+    //Fungsi Intent Aplikasi Alarm
+    fun setAlarmClock() {
+        val i = Intent(AlarmClock.ACTION_SET_ALARM)
+        i.putExtra(AlarmClock.EXTRA_MESSAGE, "${jadwalModel.mapel}")
+        i.putExtra(AlarmClock.EXTRA_HOUR, formKalender[Calendar.HOUR_OF_DAY])
+        i.putExtra(AlarmClock.EXTRA_MINUTES, formKalender[Calendar.MINUTE])
+        startActivity(i)
+    }
+
     //Fungsi Mengecek Masukan Pengguna
     fun checkAllFields(): Boolean {
+
+        listJadwal = dbHelper.getTimeByDate(edtTanggal.text.toString())
+
         if (edtMapel.length() == 0) {
             edtMapel.setError("Wajib Diisi")
             return false
@@ -283,6 +292,14 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
             edtWaktu.setError("Wajib Diisi")
             return false
         }
+
+        if(edtTanggal.text.toString().equals(listJadwal)) {
+            if (edtWaktu.text.toString().equals(dbHelper.getTimeByDate(edtTanggal.text.toString()))) {
+                edtWaktu.setError("Sudah Ada Jadwal di Waktu Ini")
+                return false
+            }
+        }
+
 
         return true
     }
@@ -305,12 +322,11 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
 
         alarmHelper.setAlarm(0, formKalender)
 
-        setRecData()
     }
 
     //Fungsi Pilih Mapel
     fun selectSubject() {
-        val mapel = arrayOf("Agama", "PPKN", "Matematika", "Bahasa Indonesia", "IPA", "IPS", "SBK", "Penjaskes", "Mulok")
+        val mapel = arrayOf("Agama", "PPKN", "Matematika", "B. Indonesia", "B. Inggris", "IPA", "IPS", "SBK", "Penjaskes", "Mulok")
         val dialog = AlertDialog.Builder(requireContext())
         dialog
             .setTitle("Pilih Kelas")
@@ -338,6 +354,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     fun selectDate() {
         val kalender = Calendar.getInstance()
 
+
         val datePickerDialog = DatePickerDialog(requireContext(), {view, year, month, dayOfMonth ->
             val simpleDateFormat = SimpleDateFormat("EEEE")
             val tanggal = Date(year, month, dayOfMonth - 1)
@@ -352,8 +369,42 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
             formKalender[Calendar.YEAR] = year
         },  kalender.get(Calendar.YEAR), kalender.get(Calendar.MONTH), kalender.get(Calendar.DATE))
 
+
         datePickerDialog.datePicker.minDate = System.currentTimeMillis()
         datePickerDialog.show()
+    }
+
+
+    //Fungsi Pilih Hari MaterialDatePicker
+    fun selectDateMaterial() {
+        val kalender = Calendar.getInstance()
+
+        val MAX_SELECTABLE_DATE_IN_FUTURE = 365
+
+        val datePickerDialog = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+            this,
+            kalender.get(Calendar.YEAR),
+            kalender.get(Calendar.MONTH),
+            kalender.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val weekdays = ArrayList<Calendar>()
+        val day = Calendar.getInstance()
+        for (i in 0 until MAX_SELECTABLE_DATE_IN_FUTURE) {
+            if (day[Calendar.DAY_OF_WEEK] !== Calendar.SATURDAY && day[Calendar.DAY_OF_WEEK] !== Calendar.SUNDAY) {
+                val d = day.clone() as Calendar
+                weekdays.add(d)
+            }
+            day.add(Calendar.DATE, 1)
+        }
+        val weekdayDays: Array<Calendar> = weekdays.toArray(arrayOfNulls(weekdays.size))
+        datePickerDialog.setSelectableDays(weekdayDays)
+
+        datePickerDialog.minDate = Calendar.getInstance()
+        datePickerDialog.version = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.Version.VERSION_2
+        datePickerDialog.setAccentColor(Color.parseColor("#136BAF"))
+        datePickerDialog.show(requireFragmentManager(), "DatePickerDialog")
+
     }
 
     //Fungsi Pilih Waktu
@@ -370,47 +421,120 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem {
     }
 
 
+    //Fungsi Pilih Waktu Material
+    fun selectTimeMaterial() {
+        val kalender = Calendar.getInstance()
+
+        val timePicker = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
+            this,
+            kalender.get(Calendar.HOUR_OF_DAY),
+            kalender.get(Calendar.MINUTE),
+            kalender.get(Calendar.SECOND),
+            true)
+
+        timePicker.setMinTime(7,0,0)
+        timePicker.setMaxTime(14,0,0)
+        timePicker.setAccentColor(Color.parseColor("#136BAF"))
+        timePicker.version = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.Version.VERSION_2
+        timePicker.show(requireFragmentManager(), "TimePickerDialog")
+    }
+
+    //Fungsi Mendapatkan Jadwal Berdasarkan Hari
     fun getScheduleByDay(day: String) {
         listJadwal = dbHelper.getAllScheduleByDay(day)
         setResetRecData()
-        cekJadwalKosong()
+        checkEmptySchedule()
     }
 
     //Fungsi Menampilkan Jadwal Hari Senin
     fun scheduleMonday() {
         getScheduleByDay("Monday")
+
+        if (listJadwal.size == null) {
+            getScheduleByDay("Senin")
+        }
+
     }
 
     //Fungsi Menampilkan Jadwal Hari Selasa
     fun scheduleTuesday() {
         getScheduleByDay("Tuesday")
+
+        if (listJadwal.size == null) {
+            getScheduleByDay("Selasa")
+        }
     }
 
     //Fungsi Menampilkan Jadwal Hari Rabu
     fun scheduleWednesday() {
         getScheduleByDay("Wednesday")
+        if (listJadwal.size == null) {
+            getScheduleByDay("Rabu")
+        }
+
     }
 
     //Fungsi Menampilkan Jadwal Hari Kamis
     fun scheduleThursday() {
         getScheduleByDay("Thursday")
+
+        if (listJadwal.size == null) {
+            getScheduleByDay("Kamis")
+        }
     }
 
     //Fungsi Menampilkan Jadwal Hari Jumat
     fun scheduleFriday() {
         getScheduleByDay("Friday")
+        if (listJadwal.size == null) {
+            getScheduleByDay("Jumat")
+        }
+
     }
 
     //Fungsi Hapus Data (sumber: Interface)
     override fun onDelete(id: Int) {
         dbHelper.deleteSchedule(id)
         setRecData()
-        cekJadwalKosong()
+        checkEmptySchedule()
     }
 
-    //Fungsi Perbauri Data (sumber: Interface)
+    //Fungsi Perbarui Data (sumber: Interface)
     override fun onUpdate(jadwalModel: JadwalModel) {
         addDataDialog(jadwalModel)
+    }
+
+    override fun onDateSet(
+        view: com.wdullaer.materialdatetimepicker.date.DatePickerDialog?,
+        year: Int,
+        monthOfYear: Int,
+        dayOfMonth: Int
+    ) {
+        val simpleDateFormat = SimpleDateFormat("EEEE")
+        val tanggal = Date(year, monthOfYear, dayOfMonth - 1)
+        val hariString = simpleDateFormat.format(tanggal)
+
+        edtTanggal.setText("$dayOfMonth-${monthOfYear+1}-$year")
+        hari = hariString
+        edtHari.setText(hariString)
+
+        formKalender[Calendar.DAY_OF_MONTH] = dayOfMonth
+        formKalender[Calendar.MONTH] = monthOfYear
+        formKalender[Calendar.YEAR] = year
+    }
+
+    override fun onTimeSet(
+        view: com.wdullaer.materialdatetimepicker.time.TimePickerDialog?,
+        hourOfDay: Int,
+        minute: Int,
+        second: Int
+    ) {
+        edtWaktu.setText("$hourOfDay:$minute")
+
+        formKalender[Calendar.HOUR_OF_DAY] = hourOfDay
+        formKalender[Calendar.MINUTE] = minute
+        formKalender[Calendar.SECOND] = 0
+        formKalender[Calendar.MILLISECOND] = 0
     }
 
 }

@@ -1,13 +1,20 @@
 package com.example.pengingatjadwal.Alarm
 
 import android.app.*
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
+import android.provider.AlarmClock
 import android.widget.Toast
+import com.example.pengingatjadwal.R
 import java.util.*
 
 class AlarmHelper(val activity: Activity) {
+
+    val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ activity.packageName + "/" + R.raw.alarm)
 
     //Fungsi mengatur alarm
     fun setAlarm(id: Int, calendar: Calendar) {
@@ -21,9 +28,9 @@ class AlarmHelper(val activity: Activity) {
             calendar.timeInMillis,
             pendingIntent
         )
-
-        Toast.makeText(activity, "Pengingat telah Diatur", Toast.LENGTH_SHORT).show()
     }
+
+
 
     //Fungsi membuat Channel Notifikasi
     fun createNotificationChannel(activity: Activity) {
@@ -33,13 +40,21 @@ class AlarmHelper(val activity: Activity) {
             val kepentingan = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("ChannelPengingatJadwalMengajar", nama, kepentingan)
 
+            val audioAttributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+
             channel.description = deskripsi
+            channel.setSound(soundUri, audioAttributes)
 
             val  notificationManager = activity.getSystemService(
                 NotificationManager::class.java
             )
 
-            notificationManager.createNotificationChannel(channel)
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel)
+            }
         }
 
     }

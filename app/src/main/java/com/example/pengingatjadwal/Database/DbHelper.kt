@@ -157,6 +157,57 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
+    //Baca Semua Data di DB Sesuai
+    fun getDate(tanggal: String) {
+        val time: MutableList<String> = mutableListOf()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '$tanggal' AND status != 2", null)
+
+        cursor.moveToFirst()
+
+        if (cursor.count > 0) {
+            do {
+                time.add(cursor.getString(5))
+            } while (cursor.moveToNext())
+        }
+    }
+
+    //Baca Semua Waktu di DB Sesuai Tanggal
+    fun getTimeByDate(tanggal: String) : MutableList<JadwalModel>{
+        val jadwal = mutableListOf<JadwalModel>()
+        val time: MutableList<String> = mutableListOf()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '$tanggal' AND status != 2", null)
+
+        cursor.moveToFirst()
+
+        if (cursor.count > 0) {
+            do {
+                jadwal.add (
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        return jadwal
+    }
+
     //Baca Semua Data di DB yang Riwayat
     fun getAllHistorySchedule() : MutableList<JadwalModel> {
         val jadwal = mutableListOf<JadwalModel>()
