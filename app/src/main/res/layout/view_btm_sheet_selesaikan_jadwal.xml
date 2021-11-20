@@ -23,7 +23,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_catatan_view_btm_selesai_mengajar"
             android:hint="Masukkan Catatan"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
 

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_above="@+id/bot_nav_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bot_nav_main" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bot_nav_main"
@@ -19,4 +19,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
+    <ImageView
+        android:id="@+id/iv_pop_up_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:padding="2dp"
+        android:src="@drawable/ic_pop_menu" />
 </RelativeLayout>

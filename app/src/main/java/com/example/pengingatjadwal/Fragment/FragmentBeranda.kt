@@ -1,5 +1,6 @@
 package com.example.pengingatjadwal.Fragment
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Adapter.RecBerandaAdapter
 import com.example.pengingatjadwal.Adapter.RecSemuaJadwalItem
+import com.example.pengingatjadwal.Alarm.AlarmHelper
 import com.example.pengingatjadwal.Database.DbHelper
 import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
@@ -33,6 +35,9 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     lateinit var recAdapter: RecBerandaAdapter
     lateinit var dbHelper: DbHelper
     lateinit var listJadwalSekarang: MutableList<JadwalModel>
+    lateinit var listJadwalSekarangBeranda: MutableList<JadwalModel>
+
+    var isAllFieldsChecked: Boolean = false
     val formatNamaHari = SimpleDateFormat("EEEE")
     val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
     val hariIni = Date()
@@ -69,18 +74,25 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
 
     //Fungsi Ngeset Data ke Adapter
     fun setRecData() {
-        if (listJadwalSekarang.size == 0) {
+        if (listJadwalSekarangBeranda.size == 0) {
             llKosong.visibility = View.VISIBLE
         } else {
             llKosong.visibility = View.GONE
         }
-        recAdapter = RecBerandaAdapter(listJadwalSekarang,this, 1)
+        recAdapter = RecBerandaAdapter(listJadwalSekarangBeranda,this, 1)
         recBeranda.adapter = recAdapter
     }
 
     //Fungsi Mengambil Data Jadwal Hari Ini dari DB
     fun getTodaySchedule() {
         listJadwalSekarang = dbHelper.getAllTodaySchedule()
+
+        listJadwalSekarangBeranda = dbHelper.getAllTodayScheduleBeranda()
+
+        for (jadwalModel in listJadwalSekarang) {
+            onDelete(jadwalModel.id)
+        }
+
     }
 
     //Fungsi Ubah Nama Hari
@@ -97,7 +109,7 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
 
     //Fungsi Hapus Data (sumber: Interface)
     override fun onDelete(id: Int) {
-        TODO("Not yet implemented")
+        dbHelper.deleteSchedule(id)
     }
 
     //Fungsi Perbarui Data (sumber: Interface)
@@ -110,17 +122,20 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
 
         val btmSheetDialog = BottomSheetDialog(requireContext())
         btmSheetDialog.setContentView(btnDoneScheduleView)
+
         btmSheetDialog.show()
 
         mbtSelesai.setOnClickListener {
-            dbHelper.updateSchedule(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
+            if(edtCatatan.length() == 0) {
+                edtCatatan.error = "Wajib Diisi"
+            } else {
+                dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
 
-            btmSheetDialog.dismiss()
-            getTodaySchedule()
-            setRecData()
-
+                btmSheetDialog.dismiss()
+                getTodaySchedule()
+                setRecData()
+            }
         }
-
         getTodaySchedule()
         setRecData()
     }

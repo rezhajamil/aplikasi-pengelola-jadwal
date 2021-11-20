@@ -82,7 +82,39 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
-    //Baca Semua Data Jadwal di DB Berdasarkan Hari
+    //Cari Data Jadwal di DB tbBeranda
+    fun searchScheduleBeranda(kelas: String): MutableList<JadwalModel> {
+        val jadwal = mutableListOf<JadwalModel>()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        cursor = db.rawQuery("SELECT * FROM tbBeranda WHERE status = 2 AND kelas LIKE '%' || '${kelas}' || '%' ", null)
+
+        cursor.moveToFirst()
+
+        if(cursor.count > 0) {
+            do {
+                jadwal.add(
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+
+        return jadwal
+    }
+
+    //Baca Semua Data Jadwal di DB tbJadwal Berdasarkan Hari
     fun getAllScheduleByDay(hari: String) : MutableList<JadwalModel> {
 
         val schedules = mutableListOf<JadwalModel>()
@@ -114,7 +146,8 @@ class DbHelper(val context: Context) {
 
         return schedules
     }
-    //Simpan Data Jadwal Baru di DB
+
+    //Simpan Data Jadwal Baru di DB tbJadwal
     fun saveNewSchedule(values: ContentValues) {
         dbConfig = DbConfig(context)
 
@@ -123,7 +156,16 @@ class DbHelper(val context: Context) {
         db.insert("tbJadwal", null, values)
     }
 
-    //Baca Semua Data di DB yang Hari Ini
+    //Simpan Data Jadwal Baru di DB tbBeranda
+    fun saveNewScheduleBeranda(values: ContentValues) {
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.writableDatabase
+
+        db.insert("tbBeranda", null, values)
+    }
+
+    //Baca Semua Data di DB tbJadwal yang Hari Ini
     fun getAllTodaySchedule() : MutableList<JadwalModel> {
         val jadwal = mutableListOf<JadwalModel>()
 
@@ -134,7 +176,7 @@ class DbHelper(val context: Context) {
         val hariIni = Date()
         val formatHari = SimpleDateFormat("d-MM-yyyy")
 
-        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '${formatHari.format(hariIni)}' AND status != 2", null)
+        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '${formatHari.format(hariIni)}' AND status != 2 ORDER BY waktu ASC", null)
 
         cursor.moveToFirst()
 
@@ -157,29 +199,43 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
-    //Baca Semua Data di DB Sesuai
-    fun getDate(tanggal: String) {
-        val time: MutableList<String> = mutableListOf()
+    //Baca Semua Data di DB tbBeranda yang Hari Ini
+    fun getAllTodayScheduleBeranda() : MutableList<JadwalModel> {
+        val jadwal = mutableListOf<JadwalModel>()
 
         dbConfig = DbConfig(context)
 
         db = dbConfig.readableDatabase
 
-        cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '$tanggal' AND status != 2", null)
+        val hariIni = Date()
+        val formatHari = SimpleDateFormat("d-MM-yyyy")
+
+        cursor = db.rawQuery("SELECT * FROM tbBeranda WHERE tanggal LIKE '${formatHari.format(hariIni)}' AND status != 2 ORDER BY waktu DESC", null)
 
         cursor.moveToFirst()
 
         if (cursor.count > 0) {
             do {
-                time.add(cursor.getString(5))
+                jadwal.add (
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
+                    )
+                )
             } while (cursor.moveToNext())
         }
+        return jadwal
     }
 
     //Baca Semua Waktu di DB Sesuai Tanggal
     fun getTimeByDate(tanggal: String) : MutableList<JadwalModel>{
         val jadwal = mutableListOf<JadwalModel>()
-        val time: MutableList<String> = mutableListOf()
 
         dbConfig = DbConfig(context)
 
@@ -239,7 +295,38 @@ class DbHelper(val context: Context) {
         return jadwal
     }
 
-    //Fungsi Perbarui Data di DB
+    //Baca Semua Data di DB tBeranda yang Riwayat
+    fun getAllHistoryScheduleBeranda() : MutableList<JadwalModel> {
+        val jadwal = mutableListOf<JadwalModel>()
+
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.readableDatabase
+
+        cursor = db.rawQuery("SELECT * FROM tbBeranda WHERE status = '2'", null)
+
+        cursor.moveToFirst()
+
+        if (cursor.count > 0) {
+            do {
+                jadwal.add (
+                    JadwalModel(
+                        cursor.getString(0).toInt(),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6).toInt(),
+                        cursor.getString(7)
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        return jadwal
+    }
+
+    //Fungsi Perbarui Data di DB tbJadwal
     fun updateSchedule(id: Int, mapel: String, kelas: String, hari: String, tanggal: String,  waktu: String, status: String, catatan: String) {
         dbConfig = DbConfig(context)
 
@@ -258,12 +345,41 @@ class DbHelper(val context: Context) {
         db.update("tbJadwal", values, "id = ?", arrayOf(id.toString()))
     }
 
-    //Fungsi Hapus Data dari DB
+    //Fungsi Perbarui Data di DB tbBeranda
+    fun updateScheduleBeranda(id: Int, mapel: String, kelas: String, hari: String, tanggal: String,  waktu: String, status: String, catatan: String) {
+        dbConfig = DbConfig(context)
+
+        val values = ContentValues()
+
+        values.put("mapel", mapel)
+        values.put("kelas", kelas)
+        values.put("hari", hari)
+        values.put("tanggal", tanggal)
+        values.put("waktu", waktu)
+        values.put("status", status)
+        values.put("catatan", catatan)
+
+        db = dbConfig.writableDatabase
+
+        db.update("tbBeranda", values, "id = ?", arrayOf(id.toString()))
+    }
+
+    //Fungsi Hapus Data dari DB tbJadwal
     fun deleteSchedule(id: Int) {
         dbConfig = DbConfig(context)
 
         db = dbConfig.writableDatabase
 
         db.delete("tbJadwal", "id = ?", arrayOf(id.toString()))
+    }
+
+    //Fungsi Hapus Data dari DB yang Lewat
+    fun deleteSchedulePast(tanggal: String) {
+        dbConfig = DbConfig(context)
+
+        db = dbConfig.writableDatabase
+
+        /*db.rawQuery("DELETE FROM tbJadwal WHERE tanggal LIKE $tanggal", null)*/
+        db.delete("tbJadwal", "tanggal = ?", arrayOf(tanggal))
     }
 }

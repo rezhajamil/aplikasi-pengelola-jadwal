@@ -1,6 +1,5 @@
 package com.example.pengingatjadwal.Alarm
 
-import android.app.Notification
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentResolver
@@ -8,10 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.pengingatjadwal.MainActivity
+import com.example.pengingatjadwal.Activity.MainActivity
 import com.example.pengingatjadwal.R
 
 class AlarmReceiver: BroadcastReceiver() {

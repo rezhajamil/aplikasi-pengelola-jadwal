@@ -1,6 +1,8 @@
 package com.example.pengingatjadwal.Adapter
 
 import android.app.AlertDialog
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.button.MaterialButton
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,10 +56,17 @@ class RecBerlangsungAdapter(val listJadwal: MutableList<JadwalModel>, val recSem
                         recSemuaJadwalItem.onUpdate(jadwalModel)
                     }
                     .setNegativeButton("Batal") { dialog, which ->
-                        Toast.makeText(v.context, "Dibatalkan", Toast.LENGTH_SHORT).show()
                     }
                     .setNeutralButton("Hapus") { dialog, which ->
-                        recSemuaJadwalItem.onDelete(jadwalModel.id)
+                        val dialog = AlertDialog.Builder(v.context)
+                        dialog
+                            .setTitle("Perhatian")
+                            .setMessage("Yakin Hapus Jadwal Ini?")
+                            .setPositiveButton("Hapus") {dialog, which ->
+                                recSemuaJadwalItem.onDelete(jadwalModel.id)
+                            }
+                            .setNegativeButton("Batal") { dialog, which ->
+                            }
                     }
                     .show()
             }

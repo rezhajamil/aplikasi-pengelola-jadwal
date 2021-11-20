@@ -5,11 +5,33 @@
     android:background="#F3F3F3">
 
     <LinearLayout
+        android:id="@+id/view_halo_beranda"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:text="Halo Pengguna"
+            android:textSize="23sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Berikut Adalah Jadwal Hari Ini"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/view_tanggal_beranda"
         android:padding="20dp"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
 
         <TextView
             android:id="@+id/tv_hari_beranda"
@@ -25,6 +47,8 @@
             android:text="23 November 2021"/>
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/ll_jadwal_kosong_beranda"

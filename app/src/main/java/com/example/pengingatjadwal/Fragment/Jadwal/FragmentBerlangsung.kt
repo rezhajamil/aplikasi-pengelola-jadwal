@@ -151,6 +151,9 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     fun deletePastSchedule() {
         listJadwal = dbHelper.getAllSchedule()
         recAdapter = RecBerlangsungAdapter(listJadwal, this, 2)
+        if (Calendar.getInstance().after(jadwalModel.tanggal)) {
+            onDelete(jadwalModel.id)
+        }
 
     }
 
@@ -231,6 +234,15 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
                         edtWaktu.text.toString(),
                         "0",
                         "0")
+                    dbHelper.updateScheduleBeranda(
+                        jadwalBaru.id,
+                        edtMapel.text.toString(),
+                        edtKelas.text.toString(),
+                        edtHari.text.toString(),
+                        edtTanggal.text.toString(),
+                        edtWaktu.text.toString(),
+                        "0",
+                        "0")
                     setRecData()
                     alarmHelper.setAlarm(0, formKalender)
                     btmSheetDialog.dismiss()
@@ -244,6 +256,13 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
 
                 if (isAllFieldsChecked) {
                     saveDataToDb(
+                        edtMapel.text.toString(),
+                        edtKelas.text.toString(),
+                        hari,
+                        edtTanggal.text.toString(),
+                        edtWaktu.text.toString()
+                    )
+                    saveDataToDbBeranda(
                         edtMapel.text.toString(),
                         edtKelas.text.toString(),
                         hari,
@@ -304,7 +323,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         return true
     }
 
-    //Fungsi Simpan Data ke DB
+    //Fungsi Simpan Data ke DB tbJadwal
     fun saveDataToDb(mapel: String, kelas: String, hari: String, tanggal: String, waktu: String) {
         val values = ContentValues()
 
@@ -321,7 +340,25 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         val waktu = waktu.split(":")
 
         alarmHelper.setAlarm(0, formKalender)
+    }
 
+    //Fungsi Simpan Data ke DB tbBeranda
+    fun saveDataToDbBeranda(mapel: String, kelas: String, hari: String, tanggal: String, waktu: String) {
+        val values = ContentValues()
+
+        values.put("mapel", mapel)
+        values.put("kelas", kelas)
+        values.put("hari", hari)
+        values.put("tanggal", tanggal)
+        values.put("waktu", waktu)
+        values.put("status", "0")
+        values.put("catatan", "0")
+
+        dbHelper.saveNewScheduleBeranda(values)
+
+        val waktu = waktu.split(":")
+
+        alarmHelper.setAlarm(0, formKalender)
     }
 
     //Fungsi Pilih Mapel

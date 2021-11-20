@@ -74,12 +74,12 @@ class FragmentRiwayat: Fragment(), RecSemuaJadwalItem {
 
     //Fungsi Mencari Riwayat Jadwal
     fun searchHistorySchedule(kelas: String) {
-        listRiwayatJadwal = dbHelper.searchSchedule(kelas)
+        listRiwayatJadwal = dbHelper.searchScheduleBeranda(kelas)
     }
 
     //Fungsi Mendapatkan Riwayat Jadwal
     fun getHistorySchedule() {
-        listRiwayatJadwal = dbHelper.getAllHistorySchedule()
+        listRiwayatJadwal = dbHelper.getAllHistoryScheduleBeranda()
     }
 
     //Fungsi Mengeset Data ke Adapter
@@ -118,4 +118,5 @@ class FragmentRiwayat: Fragment(), RecSemuaJadwalItem {
             btmSheetCatatan.dismiss()
         }
     }
+
 }
