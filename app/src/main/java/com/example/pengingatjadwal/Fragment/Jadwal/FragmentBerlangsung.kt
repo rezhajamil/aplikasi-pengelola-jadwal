@@ -12,10 +12,7 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +39,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     lateinit var rootView: View
     lateinit var fabTambah: FloatingActionButton
     lateinit var recBerlangsung: RecyclerView
+    lateinit var tvJudul: TextView
     lateinit var edtMapel: EditText
     lateinit var edtKelas: EditText
     lateinit var edtTanggal: EditText
@@ -161,13 +159,14 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     fun addDataDialog(jadwalModel: JadwalModel) {
         val btmSheetView = LayoutInflater.from(requireContext())
             .inflate(R.layout.view_btm_sheet_tambah_jadwal, null, false)
-        val btmSheetDialog = BottomSheetDialog(requireContext())
+        val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
 
         edtMapel = btmSheetView.findViewById(R.id.edt_mapel_tambah_jadwal)
         edtKelas = btmSheetView.findViewById(R.id.edt_kelas_tambah_jadwal)
         edtTanggal = btmSheetView.findViewById(R.id.edt_tanggal_tambah_jadwal)
         edtWaktu = btmSheetView.findViewById(R.id.edt_waktu_tambah_jadwal)
         edtHari = btmSheetView.findViewById(R.id.edt_hari_tambah_jadwal)
+        tvJudul = btmSheetView.findViewById(R.id.tv_judul_tambah_jadwal)
         val mbtTambah = btmSheetView.findViewById<MaterialButton>(R.id.btn_tambah_tambah_jadwal)
 
         edtMapel.inputType = InputType.TYPE_NULL
@@ -220,6 +219,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
                 edtWaktu.text.toString(),
             )
 
+            tvJudul.setText("Perbarui")
             mbtTambah.setText("Perbarui")
             mbtTambah.setOnClickListener {
                 isAllFieldsChecked = checkAllFields()
@@ -290,8 +290,6 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     //Fungsi Mengecek Masukan Pengguna
     fun checkAllFields(): Boolean {
 
-        listJadwal = dbHelper.getTimeByDate(edtTanggal.text.toString())
-
         if (edtMapel.length() == 0) {
             edtMapel.setError("Wajib Diisi")
             return false
@@ -311,14 +309,6 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
             edtWaktu.setError("Wajib Diisi")
             return false
         }
-
-        if(edtTanggal.text.toString().equals(listJadwal)) {
-            if (edtWaktu.text.toString().equals(dbHelper.getTimeByDate(edtTanggal.text.toString()))) {
-                edtWaktu.setError("Sudah Ada Jadwal di Waktu Ini")
-                return false
-            }
-        }
-
 
         return true
     }
@@ -566,7 +556,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         minute: Int,
         second: Int
     ) {
-        edtWaktu.setText("$hourOfDay:$minute")
+        edtWaktu.setText(String.format("%02d:%02d", hourOfDay, minute))
 
         formKalender[Calendar.HOUR_OF_DAY] = hourOfDay
         formKalender[Calendar.MINUTE] = minute

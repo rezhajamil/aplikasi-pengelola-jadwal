@@ -2,10 +2,12 @@ package com.example.pengingatjadwal.Adapter
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -47,10 +49,11 @@ class RecBerlangsungAdapter(val listJadwal: MutableList<JadwalModel>, val recSem
             tvKelas.text = jadwalModel.kelas
 
             mbtUbah.setOnClickListener {
-                val dialog = AlertDialog.Builder(v.context)
+                val alertDialogUbah = AlertDialog.Builder(v.context)
 
-                dialog
+                alertDialogUbah
                     .setTitle("Ubah Jadwal")
+                    .setIcon(R.drawable.ic_ubah_biru)
                     .setMessage("Hapus atau Perbarui?")
                     .setPositiveButton("Ubah") { dialog, which ->
                         recSemuaJadwalItem.onUpdate(jadwalModel)
@@ -58,17 +61,26 @@ class RecBerlangsungAdapter(val listJadwal: MutableList<JadwalModel>, val recSem
                     .setNegativeButton("Batal") { dialog, which ->
                     }
                     .setNeutralButton("Hapus") { dialog, which ->
-                        val dialog = AlertDialog.Builder(v.context)
-                        dialog
+                        val alertDialogHapus = AlertDialog.Builder(v.context)
+                        alertDialogHapus
                             .setTitle("Perhatian")
+                            .setIcon(R.drawable.ic_warning_biru)
                             .setMessage("Yakin Hapus Jadwal Ini?")
                             .setPositiveButton("Hapus") {dialog, which ->
                                 recSemuaJadwalItem.onDelete(jadwalModel.id)
                             }
                             .setNegativeButton("Batal") { dialog, which ->
                             }
+
+                        val dialogHapus = alertDialogHapus.create()
+                        dialogHapus.window?.setBackgroundDrawableResource(R.drawable.rounded_bg)
+                        dialogHapus.show()
                     }
-                    .show()
+
+                val dialogUbah = alertDialogUbah.create()
+                dialogUbah.window?.setBackgroundDrawableResource(R.drawable.rounded_bg)
+                dialogUbah.show()
+
             }
         }
     }

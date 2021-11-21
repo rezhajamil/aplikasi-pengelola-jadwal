@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="25dp"
         android:id="@+id/tab_jadwal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

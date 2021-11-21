@@ -14,13 +14,15 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@mipmap/ic_launcher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/ic_empty"
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
 
         <TextView
             android:textAlignment="center"
             android:text="Belum Ada Jadwal\nSilahkan Tambahkan"
+            android:textColor="#256ABE"
+            android:fontFamily="@font/gilroy"
             android:textSize="16sp"
             android:padding="16sp"
             android:layout_width="wrap_content"
@@ -38,36 +40,48 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_semua"
+            android:textColor="#256ABE"
+            android:backgroundTint="#C2DDFA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Semua" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_senin"
+            android:textColor="#256ABE"
+            android:backgroundTint="#C2DDFA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sen" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_selasa"
+            android:textColor="#256ABE"
+            android:backgroundTint="#C2DDFA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sel" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_rabu"
+            android:textColor="#256ABE"
+            android:backgroundTint="#C2DDFA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rab" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_kamis"
+            android:textColor="#256ABE"
+            android:backgroundTint="#C2DDFA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kam" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_jumat"
+            android:textColor="#256ABE"
+            android:backgroundTint="#C2DDFA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Jum" />
@@ -75,13 +89,18 @@
     </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@+id/chip_hari"
         android:id="@+id/rec_berlangsung"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chip_hari" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_tambah_jadwal"
+        android:backgroundTint="#425BE3"
+        app:backgroundTint="@color/white"
+        android:outlineAmbientShadowColor="#425BE3"
+        android:src="@drawable/ic_add_schedule"
+        app:tint="#ffffff"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"

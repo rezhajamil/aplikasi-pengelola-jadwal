@@ -42,50 +42,34 @@ class BantuanActivity : AppCompatActivity() {
         val listScreenItem: MutableList<ScreenItem> = mutableListOf()
         listScreenItem.add(
             ScreenItem(
-                "Kelola Produk",
-                "Tambah, Ubah, dan Hapus Data Produk Dagangan Anda",
-                "*Agar aplikasi berjalan lancar harap mengelola produk terlebih dahulu",
-                R.drawable.ic_bantuan
+                "Kelola Jadwal",
+                "Tambah, Ubah, dan Hapus Data Jadwal Mengajar Anda",
+                "*Agar aplikasi berjalan lancar harap mengelola jadwal terlebih dahulu",
+                R.drawable.ic_kelola_jadwal
             )
         )
         listScreenItem.add(
             ScreenItem(
                 "Tambah Data",
-                "Pastikan mengisi semua data produk dengan benar",
-                "*Tombol tambah akan aktif jika semua data terisi dengan benar",
-                R.drawable.ic_bantuan
+                "Pastikan Mengisi Semua Data Jadwal Dengan Benar",
+                "*Data akan ditambah jika semua data terisi dengan benar",
+                R.drawable.ic_tambah_jadwal
             )
         )
         listScreenItem.add(
             ScreenItem(
-                "Gunakan Barcode",
-                "Gunakan Kamera Layaknya Barcode Scanner",
-                "*Untuk menggunakan fitur ini harap izinkan aplikasi mengakses kamera",
-                R.drawable.ic_bantuan
-            )
-        )
-        listScreenItem.add(
-            ScreenItem(
-                "Isi Keranjang ",
-                "Buat Daftar Produk Yang Dibeli Pelanggan",
-                "*Keranjang hanya dapat diisi dengan produk yang telah dikelola sebelumnya",
-                R.drawable.ic_bantuan
-            )
-        )
-        listScreenItem.add(
-            ScreenItem(
-                "Hitung Cepat",
-                "Total Harga Belanja Pelanggan Terhitung Otomatis",
-                "*Total harga diperoleh dari jumlah harga satuan produk dikali banyaknya ",
-                R.drawable.ic_bantuan
+                "Pengingat Jadwal",
+                "Notifikasi Alarm Pengingat Jadwal Mengajar Anda",
+                "*Fitur ini bekerja otomatis seiring dengan data jadwal",
+                R.drawable.ic_alarm
             )
         )
         listScreenItem.add(
             ScreenItem(
                 "Lihat Riwayat",
-                "Catat dan Lihat Setiap Transaksi Yang Dilakukan",
-                "*Setiap transaksi yang diproses akan otomatis tercatat",
-                R.drawable.ic_bantuan
+                "Catat dan Lihat Setiap Riwayat Mengajar Yang Dilakukan",
+                "*Setiap jadwal mengajar yang diselesaikan akan otomatis tercatat",
+                R.drawable.ic_history
             )
         )
 

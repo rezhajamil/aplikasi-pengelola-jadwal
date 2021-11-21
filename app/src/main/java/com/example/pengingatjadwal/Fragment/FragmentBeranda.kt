@@ -120,9 +120,9 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         val edtCatatan = btnDoneScheduleView.findViewById<EditText>(R.id.edt_catatan_view_btm_selesai_mengajar)
         val mbtSelesai = btnDoneScheduleView.findViewById<MaterialButton>(R.id.mbt_selesai_view_btm_selesai_mengajar)
 
-        val btmSheetDialog = BottomSheetDialog(requireContext())
-        btmSheetDialog.setContentView(btnDoneScheduleView)
+        val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
 
+        btmSheetDialog.setContentView(btnDoneScheduleView)
         btmSheetDialog.show()
 
         mbtSelesai.setOnClickListener {

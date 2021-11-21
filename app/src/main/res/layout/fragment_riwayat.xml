@@ -30,13 +30,15 @@
         android:layout_height="wrap_content">
 
     <ImageView
-        android:src="@mipmap/ic_launcher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:src="@drawable/ic_no_history"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
 
     <TextView
         android:textAlignment="center"
         android:text="Riwayat Kosong\nSilahkan Selesaikan Jadwal"
+        android:textColor="#256ABE"
+        android:fontFamily="@font/gilroy"
         android:textSize="18sp"
         android:padding="16sp"
         android:layout_width="wrap_content"

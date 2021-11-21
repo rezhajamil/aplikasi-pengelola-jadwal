@@ -8,8 +8,10 @@
 
     <TextView
         android:text="Selesaikan Jadwal Mengajar"
+        android:textColor="#256ABE"
+        android:fontFamily="@font/momcake"
         android:layout_gravity="center"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"

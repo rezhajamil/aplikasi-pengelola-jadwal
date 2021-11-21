@@ -6,26 +6,33 @@
 
     <LinearLayout
         android:id="@+id/view_halo_beranda"
-        android:padding="20dp"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true">
-
-        <TextView
-            android:text="Halo Pengguna"
-            android:textSize="23sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Berikut Adalah Jadwal Hari Ini"/>
+            android:fontFamily="@font/momcake"
+            android:text="Halo Pengguna"
+            android:textColor="#256ABE"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/momcake"
+            android:text="Berikut Adalah Jadwal Hari Ini"
+            android:textColor="#256ABE"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:id="@+id/view_tanggal_beranda"
         android:padding="20dp"
         android:orientation="vertical"
@@ -37,12 +44,16 @@
             android:id="@+id/tv_hari_beranda"
             android:text="Hari Senin"
             android:textSize="23sp"
+            android:textColor="#3C197E"
+            android:fontFamily="@font/gilroy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tv_tanggal_beranda"
             android:layout_width="wrap_content"
+            android:textColor="#3C197E"
+            android:fontFamily="@font/gilroy"
             android:layout_height="wrap_content"
             android:text="23 November 2021"/>
 
@@ -59,15 +70,17 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_no_schedule" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16sp"
             android:text="Tidak Ada Jadwal Mengajar Hari Ini"
+            android:textColor="#256ABE"
+            android:fontFamily="@font/gilroy"
             android:textSize="16sp" />
 
     </LinearLayout>

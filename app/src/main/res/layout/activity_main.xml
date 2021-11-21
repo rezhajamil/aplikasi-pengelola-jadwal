@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:padding="2dp"
-        android:src="@drawable/ic_pop_menu" />
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_menu_circles"
+        app:tint="#425BE3" />
+
 </RelativeLayout>

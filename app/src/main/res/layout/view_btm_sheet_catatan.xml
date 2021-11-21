@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,20 +9,30 @@
 
     <TextView
         android:text="Catatan"
+        android:textColor="#256ABE"
+        android:fontFamily="@font/momcake"
         android:layout_gravity="center"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:text="sample"
-        android:id="@+id/tv_catatan_view_btm_sheet_catatan"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_catatan_view_btm_sheet_catatan"
+            android:hint="Catatan"
+            android:inputType="textMultiLine"
+            android:editable="false"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            tools:ignore="Deprecated" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <View
         android:layout_width="0dp"

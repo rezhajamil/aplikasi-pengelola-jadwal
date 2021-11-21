@@ -7,9 +7,12 @@
     android:padding="20dp">
 
     <TextView
+        android:id="@+id/tv_judul_tambah_jadwal"
         android:text="Tambah Jadwal"
+        android:textColor="#256ABE"
+        android:fontFamily="@font/momcake"
         android:layout_gravity="center"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
@@ -75,7 +78,7 @@
             android:id="@+id/edt_waktu_tambah_jadwal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="time"
+            android:inputType="text"
             android:hint="Pilih Waktu"/>
 
     </com.google.android.material.textfield.TextInputLayout>

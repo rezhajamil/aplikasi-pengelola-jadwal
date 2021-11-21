@@ -1,12 +1,16 @@
 package com.example.pengingatjadwal.Activity
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
+import androidx.appcompat.view.menu.MenuBuilder
 import com.example.pengingatjadwal.Fragment.FragmentBeranda
 import com.example.pengingatjadwal.Fragment.FragmentJadwal
 import com.example.pengingatjadwal.R
@@ -26,10 +30,9 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
 
         initView()
 
-        /*ivPopUpMenu.setOnClickListener {
+        ivPopUpMenu.setOnClickListener {
             showPopUp(ivPopUpMenu)
-        }*/
-
+        }
 
     }
 
@@ -58,11 +61,10 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         return false
     }
 
-
     //Fungsi PopUp Menu
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(v : View) {
         val popup = PopupMenu(this, v)
-
         popup.inflate(R.menu.menu_pop_menu)
         popup.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId) {
@@ -70,11 +72,14 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
                     val intentMenuBantuan = Intent(applicationContext, BantuanActivity::class.java)
                     startActivity(intentMenuBantuan)
                 }
-                R.id.menu_tentang -> {}
+                R.id.menu_tentang -> run {
+                    val intentMenuTentang = Intent(applicationContext, TentangActivity::class.java)
+                    startActivity(intentMenuTentang)
+                }
             }
             true
         }
+        popup.setForceShowIcon(true)
         popup.show()
-
     }
 }

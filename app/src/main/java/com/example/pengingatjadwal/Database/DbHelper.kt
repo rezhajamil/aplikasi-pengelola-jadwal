@@ -305,9 +305,8 @@ class DbHelper(val context: Context) {
 
         cursor = db.rawQuery("SELECT * FROM tbBeranda WHERE status = '2'", null)
 
-        cursor.moveToFirst()
-
         if (cursor.count > 0) {
+            cursor.moveToLast()
             do {
                 jadwal.add (
                     JadwalModel(
@@ -321,7 +320,7 @@ class DbHelper(val context: Context) {
                         cursor.getString(7)
                     )
                 )
-            } while (cursor.moveToNext())
+            } while (cursor.moveToPrevious())
         }
         return jadwal
     }

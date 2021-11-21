@@ -1,6 +1,7 @@
 package com.example.pengingatjadwal.Fragment.Jadwal
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,12 +106,14 @@ class FragmentRiwayat: Fragment(), RecSemuaJadwalItem {
         val btmSheetCatatanView = LayoutInflater.from(requireContext())
             .inflate(R.layout.view_btm_sheet_catatan, null, false)
 
-        val tvNotes = btmSheetCatatanView.findViewById<TextView>(R.id.tv_catatan_view_btm_sheet_catatan)
+        val edtNotes = btmSheetCatatanView.findViewById<TextView>(R.id.edt_catatan_view_btm_sheet_catatan)
         val mbtClose = btmSheetCatatanView.findViewById<TextView>(R.id.mbt_tutup_view_btm_sheet_catatan)
 
-        tvNotes.text = jadwalModel.catatan
+        edtNotes.inputType = InputType.TYPE_NULL
 
-        val btmSheetCatatan = BottomSheetDialog(requireContext())
+        edtNotes.text = jadwalModel.catatan
+
+        val btmSheetCatatan = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
         btmSheetCatatan.setContentView(btmSheetCatatanView)
         btmSheetCatatan.show()
 
