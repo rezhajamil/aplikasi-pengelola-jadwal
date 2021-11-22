@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.tabs.TabLayout
+    <androidx.cardview.widget.CardView
         android:layout_marginTop="25dp"
-        android:id="@+id/tab_jadwal"
+        android:id="@+id/cv_tab_jadwal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp">
+        <com.google.android.material.tabs.TabLayout
+            android:backgroundTint="#D7EEFB"
+            android:id="@+id/tab_jadwal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_jadwal"
-        android:layout_below="@+id/tab_jadwal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cv_tab_jadwal" />
 
 
 </RelativeLayout>

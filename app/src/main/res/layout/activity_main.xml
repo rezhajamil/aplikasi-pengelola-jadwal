@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.MainActivity">
@@ -9,14 +10,19 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bot_nav_main" />
+        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:theme="@style/NavigationTheme"
+        android:elevation="10dp"
+        app:elevation="10dp"
+        android:background="@drawable/rounded_top_bg"
+        app:background="@drawable/rounded_top_bg"
         android:id="@+id/bot_nav_main"
         app:menu="@menu/menu_bot_nav_main"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"/>
 
     <ImageView

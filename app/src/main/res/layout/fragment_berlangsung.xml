@@ -31,6 +31,7 @@
     </LinearLayout>
 
     <com.google.android.material.chip.ChipGroup
+        android:background="@android:color/transparent"
         android:id="@+id/chip_hari"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,15 +97,18 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_tambah_jadwal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="75dp"
         android:backgroundTint="#425BE3"
-        app:backgroundTint="@color/white"
         android:outlineAmbientShadowColor="#425BE3"
         android:src="@drawable/ic_add_schedule"
-        app:tint="#ffffff"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:backgroundTint="@color/white"
+        app:tint="#ffffff" />
 
 </RelativeLayout>

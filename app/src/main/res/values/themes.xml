@@ -23,4 +23,10 @@
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_top_bg</item>
     </style>
+
+    <style name="NavigationTheme" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@android:color/white</item>
+        <item name="itemTextColor">@android:color/white</item>
+        <item name="android:background">#30ffffff</item>
+    </style>
 </resources>
