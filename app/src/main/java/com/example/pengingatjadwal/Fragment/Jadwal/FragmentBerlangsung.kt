@@ -354,27 +354,29 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     //Fungsi Pilih Mapel
     fun selectSubject() {
         val mapel = arrayOf("Agama", "PPKN", "Matematika", "B. Indonesia", "B. Inggris", "IPA", "IPS", "SBK", "Penjaskes", "Mulok")
-        val dialog = AlertDialog.Builder(requireContext())
-        dialog
+        val builderDialog = AlertDialog.Builder(requireContext())
+        builderDialog
             .setTitle("Pilih Kelas")
             .setItems(mapel) { dialog, position ->
-                Toast.makeText(requireContext(), mapel[position], Toast.LENGTH_SHORT).show()
                 edtMapel.setText(mapel[position].toString())
             }
-            .show()
+        val dialog = builderDialog.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_bg)
+        dialog.show()
     }
 
     //Fungsi Pilih Kelas
     fun selectClass() {
         val kelas = arrayOf("Kelas 1-A", "Kelas 1-B", "Kelas 1-C", "Kelas 1-D", "Kelas 2-A", "Kelas 2-B", "Kelas 2-C", "Kelas 2-D", "Kelas 3-A", "Kelas 3-B", "Kelas 3-C", "Kelas 3-D", "Kelas 4-A", "Kelas 4-B", "Kelas 4-C", "Kelas 4-D", "Kelas 5-A", "Kelas 5-B", "Kelas 5-C", "Kelas 5-D", "Kelas 6-A", "Kelas 6-B", "Kelas 6-C", "Kelas 6-D")
-        val dialog = AlertDialog.Builder(requireContext())
-        dialog
+        val builderDialog = AlertDialog.Builder(requireContext())
+        builderDialog
             .setTitle("Pilih Kelas")
             .setItems(kelas) { dialog, position ->
-                Toast.makeText(requireContext(), kelas[position], Toast.LENGTH_SHORT).show()
                 edtKelas.setText(kelas[position].toString())
             }
-            .show()
+        val dialog = builderDialog.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_bg)
+        dialog.show()
     }
 
     //Fungsi Pilih Hari

@@ -1,5 +1,6 @@
 package com.example.pengingatjadwal.Fragment
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,10 +37,13 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     lateinit var dbHelper: DbHelper
     lateinit var listJadwalSekarang: MutableList<JadwalModel>
     lateinit var listJadwalSekarangBeranda: MutableList<JadwalModel>
-
+    lateinit var formKalender: Calendar
+    lateinit var alarmHelper: AlarmHelper
+    var calendar: Calendar = Calendar.getInstance()
     var isAllFieldsChecked: Boolean = false
     val formatNamaHari = SimpleDateFormat("EEEE")
     val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
+    val dateFormat= SimpleDateFormat("dd-MM-yyyy")
     val hariIni = Date()
 
 
@@ -65,6 +69,10 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         tvHari = rootView.findViewById(R.id.tv_hari_beranda)
         tvTanggal = rootView.findViewById(R.id.tv_tanggal_beranda)
         llKosong = rootView.findViewById(R.id.ll_jadwal_kosong_beranda)
+
+        alarmHelper = AlarmHelper(requireActivity())
+        formKalender = Calendar.getInstance()
+        formKalender.timeInMillis = System.currentTimeMillis()
 
         recBeranda.layoutManager = LinearLayoutManager(requireContext())
 
@@ -122,6 +130,12 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
 
         val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
 
+        val myDate: Date = dateFormat.parse(jadwalModel.tanggal)
+        calendar.time = myDate
+        calendar.add(Calendar.DAY_OF_YEAR, +7)
+
+        val newDate: Date = calendar.time
+
         btmSheetDialog.setContentView(btnDoneScheduleView)
         btmSheetDialog.show()
 
@@ -129,14 +143,81 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
             if(edtCatatan.length() == 0) {
                 edtCatatan.error = "Wajib Diisi"
             } else {
-                dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
-
-                btmSheetDialog.dismiss()
-                getTodaySchedule()
-                setRecData()
+                val dialogBuilder = AlertDialog.Builder(context)
+                dialogBuilder
+                    .setIcon(R.drawable.ic_warning_biru)
+                    .setTitle("Perhatian")
+                    .setMessage("Jadwalkan Kembali Untuk Minggu Depan?")
+                    .setPositiveButton("Iya") {dialog, which ->
+                        saveDataToDb(
+                            jadwalModel.mapel,
+                            jadwalModel.kelas,
+                            jadwalModel.hari,
+                            dateFormat.format(newDate),
+                            jadwalModel.waktu
+                        )
+                        saveDataToDbBeranda(
+                            jadwalModel.mapel,
+                            jadwalModel.kelas,
+                            jadwalModel.hari,
+                            dateFormat.format(newDate),
+                            jadwalModel.waktu
+                        )
+                        dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
+                        btmSheetDialog.dismiss()
+                        getTodaySchedule()
+                        setRecData()
+                    }
+                    .setNegativeButton("Tidak") { dialog, which ->
+                        dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
+                        btmSheetDialog.dismiss()
+                        getTodaySchedule()
+                        setRecData()
+                    }
+                val dialog = dialogBuilder.create()
+                dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_bg)
+                dialog.show()
             }
         }
         getTodaySchedule()
         setRecData()
+    }
+
+    //Fungsi Simpan Data ke DB tbBeranda
+    fun saveDataToDbBeranda(mapel: String, kelas: String, hari: String, tanggal: String, waktu: String) {
+        val values = ContentValues()
+
+        values.put("mapel", mapel)
+        values.put("kelas", kelas)
+        values.put("hari", hari)
+        values.put("tanggal", tanggal)
+        values.put("waktu", waktu)
+        values.put("status", "0")
+        values.put("catatan", "0")
+
+        dbHelper.saveNewScheduleBeranda(values)
+
+        val waktu = waktu.split(":")
+
+        alarmHelper.setAlarm(0, formKalender)
+    }
+
+    //Fungsi Simpan Data ke DB tbJadwal
+    fun saveDataToDb(mapel: String, kelas: String, hari: String, tanggal: String, waktu: String) {
+        val values = ContentValues()
+
+        values.put("mapel", mapel)
+        values.put("kelas", kelas)
+        values.put("hari", hari)
+        values.put("tanggal", tanggal)
+        values.put("waktu", waktu)
+        values.put("status", "0")
+        values.put("catatan", "0")
+
+        dbHelper.saveNewSchedule(values)
+
+        val waktu = waktu.split(":")
+
+        alarmHelper.setAlarm(0, formKalender)
     }
 }
