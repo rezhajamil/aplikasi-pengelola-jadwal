@@ -31,9 +31,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-
-
-
 class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
     //Variabel View
     lateinit var rootView: View
@@ -258,14 +255,14 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
                     saveDataToDb(
                         edtMapel.text.toString(),
                         edtKelas.text.toString(),
-                        hari,
+                        edtHari.text.toString(),
                         edtTanggal.text.toString(),
                         edtWaktu.text.toString()
                     )
                     saveDataToDbBeranda(
                         edtMapel.text.toString(),
                         edtKelas.text.toString(),
-                        hari,
+                        edtHari.text.toString(),
                         edtTanggal.text.toString(),
                         edtWaktu.text.toString()
                     )
@@ -477,48 +474,43 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
 
     //Fungsi Menampilkan Jadwal Hari Senin
     fun scheduleMonday() {
-        getScheduleByDay("Monday")
+        getScheduleByDay("Senin")
 
-        if (listJadwal.size == null) {
-            getScheduleByDay("Senin")
-        }
-
+        setResetRecData()
+        checkEmptySchedule()
     }
 
     //Fungsi Menampilkan Jadwal Hari Selasa
     fun scheduleTuesday() {
-        getScheduleByDay("Tuesday")
+        getScheduleByDay("Selasa")
 
-        if (listJadwal.size == null) {
-            getScheduleByDay("Selasa")
-        }
+        setResetRecData()
+        checkEmptySchedule()
     }
 
     //Fungsi Menampilkan Jadwal Hari Rabu
     fun scheduleWednesday() {
-        getScheduleByDay("Wednesday")
-        if (listJadwal.size == null) {
-            getScheduleByDay("Rabu")
-        }
+        getScheduleByDay("Rabu")
+
+        setResetRecData()
+        checkEmptySchedule()
 
     }
 
     //Fungsi Menampilkan Jadwal Hari Kamis
     fun scheduleThursday() {
-        getScheduleByDay("Thursday")
+        getScheduleByDay("Kamis")
 
-        if (listJadwal.size == null) {
-            getScheduleByDay("Kamis")
-        }
+        setResetRecData()
+        checkEmptySchedule()
     }
 
     //Fungsi Menampilkan Jadwal Hari Jumat
     fun scheduleFriday() {
-        getScheduleByDay("Friday")
-        if (listJadwal.size == null) {
-            getScheduleByDay("Jumat")
-        }
+        getScheduleByDay("Jumat")
 
+        setResetRecData()
+        checkEmptySchedule()
     }
 
     //Fungsi Hapus Data (sumber: Interface)
@@ -544,8 +536,15 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         val hariString = simpleDateFormat.format(tanggal)
 
         edtTanggal.setText("$dayOfMonth-${monthOfYear+1}-$year")
+
         hari = hariString
-        edtHari.setText(hariString)
+
+        if (hari.equals("Monday")) { edtHari.setText("Senin") }
+        if (hari.equals("Tuesday")) { edtHari.setText("Selasa") }
+        if (hari.equals("Wednesday")) { edtHari.setText("Rabu") }
+        if (hari.equals("Thursday")) { edtHari.setText("Kamis") }
+        if (hari.equals("Friday")) { edtHari.setText("Jumat") }
+
 
         formKalender[Calendar.DAY_OF_MONTH] = dayOfMonth
         formKalender[Calendar.MONTH] = monthOfYear

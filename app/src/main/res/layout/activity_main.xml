@@ -13,17 +13,18 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:theme="@style/NavigationTheme"
-        android:elevation="10dp"
-        app:elevation="10dp"
-        android:background="@drawable/rounded_top_bg"
-        app:background="@drawable/rounded_top_bg"
+        android:layout_marginBottom="-10dp"
         android:id="@+id/bot_nav_main"
-        app:menu="@menu/menu_bot_nav_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"/>
+        android:background="@drawable/rounded_top_bg"
+        android:elevation="10dp"
+        android:theme="@style/NavigationTheme"
+        app:background="@drawable/rounded_top_bg"
+        app:elevation="10dp"
+        app:menu="@menu/menu_bot_nav_main" />
 
     <ImageView
         android:id="@+id/iv_pop_up_menu"

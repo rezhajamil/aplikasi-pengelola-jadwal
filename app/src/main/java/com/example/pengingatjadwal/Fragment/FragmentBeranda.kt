@@ -43,7 +43,8 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     var isAllFieldsChecked: Boolean = false
     val formatNamaHari = SimpleDateFormat("EEEE")
     val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
-    val dateFormat= SimpleDateFormat("dd-MM-yyyy")
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy")
+    val timeFormat = SimpleDateFormat("HH:mm")
     val hariIni = Date()
 
 
@@ -107,11 +108,11 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     fun setDayName() : String {
         var hari: String = ""
 
-        if (formatNamaHari.format(hariIni).equals("Monday")) { tvHari.text = "Senin" }
-        if (formatNamaHari.format(hariIni).equals("Tuesday")) { tvHari.text = "Selasa" }
-        if (formatNamaHari.format(hariIni).equals("Wednesday")) { tvHari.text = "Rabu" }
-        if (formatNamaHari.format(hariIni).equals("Thursday")) { tvHari.text = "Kamis" }
-        if (formatNamaHari.format(hariIni).equals("Friday")) { tvHari.text = "Jumat" }
+        if (formatNamaHari.format(hariIni).equals("Monday") || formatNamaHari.format(hariIni).equals("Senin")) { tvHari.text = "Senin" }
+        if (formatNamaHari.format(hariIni).equals("Tuesday") || formatNamaHari.format(hariIni).equals("Selasa")) { tvHari.text = "Selasa" }
+        if (formatNamaHari.format(hariIni).equals("Wednesday") || formatNamaHari.format(hariIni).equals("Rabu")) { tvHari.text = "Rabu" }
+        if (formatNamaHari.format(hariIni).equals("Thursday") || formatNamaHari.format(hariIni).equals("Kamis")) { tvHari.text = "Kamis" }
+        if (formatNamaHari.format(hariIni).equals("Friday") || formatNamaHari.format(hariIni).equals("Jumat")) { tvHari.text = "Jumat" }
         return hari
     }
 
@@ -131,10 +132,30 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
 
         val myDate: Date = dateFormat.parse(jadwalModel.tanggal)
+        val myTime: Date = timeFormat.parse(jadwalModel.waktu)
         calendar.time = myDate
-        calendar.add(Calendar.DAY_OF_YEAR, +7)
+        calendar.add(Calendar.DAY_OF_MONTH, +7)
 
         val newDate: Date = calendar.time
+
+        val kalendar: Calendar = Calendar.getInstance()
+        kalendar.time = newDate
+        val dayOfMonth: Int = kalendar.get(Calendar.DAY_OF_MONTH)
+        val month: Int = kalendar.get(Calendar.MONTH)
+        val year: Int = kalendar.get(Calendar.YEAR)
+        formKalender[Calendar.DAY_OF_MONTH] = dayOfMonth
+        formKalender[Calendar.MONTH] = month
+        formKalender[Calendar.YEAR] = year
+
+        val kalwaktu: Calendar = Calendar.getInstance()
+        kalendar.time = myTime
+        val hourOfDay: Int = kalwaktu.get(Calendar.HOUR_OF_DAY)
+        val minute: Int = kalwaktu.get(Calendar.MINUTE)
+
+        formKalender[Calendar.HOUR_OF_DAY] = hourOfDay
+        formKalender[Calendar.MINUTE] = minute
+        formKalender[Calendar.SECOND] = 0
+        formKalender[Calendar.MILLISECOND] = 0
 
         btmSheetDialog.setContentView(btnDoneScheduleView)
         btmSheetDialog.show()
@@ -163,6 +184,7 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
                             dateFormat.format(newDate),
                             jadwalModel.waktu
                         )
+
                         dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
                         btmSheetDialog.dismiss()
                         getTodaySchedule()
