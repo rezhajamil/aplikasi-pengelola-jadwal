@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     }
 
     //Fungsi PopUp Menu
-    @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(v : View) {
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_pop_menu)
@@ -79,7 +78,9 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             }
             true
         }
-        popup.setForceShowIcon(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            popup.setForceShowIcon(true)
+        }
         popup.show()
     }
 }

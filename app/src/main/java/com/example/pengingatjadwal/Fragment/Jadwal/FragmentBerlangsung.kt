@@ -110,6 +110,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         chipSemua.setOnClickListener {
             listJadwal = dbHelper.getAllSchedule()
             setRecData()
+            checkEmptySchedule()
         }
 
         chipSenin.setOnClickListener { scheduleMonday() }
@@ -518,6 +519,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         dbHelper.deleteSchedule(id)
         setRecData()
         checkEmptySchedule()
+        alarmHelper.cancelAlarm(0, requireActivity())
     }
 
     //Fungsi Perbarui Data (sumber: Interface)

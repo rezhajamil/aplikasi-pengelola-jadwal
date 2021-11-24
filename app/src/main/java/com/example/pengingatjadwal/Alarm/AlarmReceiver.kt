@@ -22,7 +22,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
 
         val builder = NotificationCompat.Builder(context!!, "ChannelPengingatJadwalMengajar")
-            .setSmallIcon(R.drawable.ic_kelas)
+            .setSmallIcon(R.drawable.ic_logo)
             .setContentTitle("Persiapan Mengajar")
             .setContentText("Anda memiliki jadwal mengajar hari ini, tekan disini untuk melihatnya")
             .setAutoCancel(true)

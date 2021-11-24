@@ -30,7 +30,15 @@ class AlarmHelper(val activity: Activity) {
         )
     }
 
-
+    //Fungsi Membatalkan Alarm
+    fun cancelAlarm(id: Int, activity: Activity) {
+        val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(activity, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(activity, id, intent, 0)
+        alarmManager.cancel(
+            pendingIntent
+        )
+    }
 
     //Fungsi membuat Channel Notifikasi
     fun createNotificationChannel(activity: Activity) {

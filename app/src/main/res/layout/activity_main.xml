@@ -8,12 +8,12 @@
     tools:context=".Activity.MainActivity">
 
     <FrameLayout
+        android:layout_marginBottom="20dp"
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_marginBottom="-10dp"
         android:id="@+id/bot_nav_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/iv_pop_up_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
