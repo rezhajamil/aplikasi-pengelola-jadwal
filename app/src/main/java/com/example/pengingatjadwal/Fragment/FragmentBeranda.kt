@@ -113,6 +113,8 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         if (formatNamaHari.format(hariIni).equals("Wednesday") || formatNamaHari.format(hariIni).equals("Rabu")) { tvHari.text = "Rabu" }
         if (formatNamaHari.format(hariIni).equals("Thursday") || formatNamaHari.format(hariIni).equals("Kamis")) { tvHari.text = "Kamis" }
         if (formatNamaHari.format(hariIni).equals("Friday") || formatNamaHari.format(hariIni).equals("Jumat")) { tvHari.text = "Jumat" }
+        if (formatNamaHari.format(hariIni).equals("Saturday") || formatNamaHari.format(hariIni).equals("Sabtu")) { tvHari.text = "Sabtu" }
+        if (formatNamaHari.format(hariIni).equals("Sunday") || formatNamaHari.format(hariIni).equals("Minggu")) { tvHari.text = "Minggu" }
         return hari
     }
 

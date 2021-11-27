@@ -25,13 +25,14 @@ class RecRiwayatAdapter(val listJadwal: MutableList<JadwalModel>, val recSemuaJa
         recSemuaJadwalItem
     )
 
+    //Untuk mencegah data berubah saat discroll
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+        return position
     }
 
+    //Untuk mencegah data berubah saat discroll
     override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-
+        return position.toLong()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
