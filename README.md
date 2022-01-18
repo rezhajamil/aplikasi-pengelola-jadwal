@@ -14,7 +14,7 @@ Setelah dilakukan observasi saat magang di SDN Percobaan Palangka Raya, didapatk
 ## Teknologi
 1. Menggunakan bahasa Kotlin
 2. Basis data menggunakan SQLite
-3. Material Date Picker (https://github.com/wdullaer/MaterialDateTimePicker)
+3. Material Date Picker (https://github.com/wdullaer/MaterialDateTimePicker) \n
    `'implementation 'com.wdullaer:materialdatetimepicker:4.2.3'`
 4. Lottie (https://lottiefiles.com/)
    `"com.airbnb.android:lottie:3.4.0"`
