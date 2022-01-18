@@ -4,7 +4,7 @@ Aplikasi alarm dan notifikasi yang nantinya mengingatkan guru dalam mengajar sis
 ## Latar Belakang
 Setelah dilakukan observasi saat magang di SDN Percobaan Palangka Raya, didapatkan bahwa guru jarang memanfaatkan smartphone sebagai pembanu saat proses belajar mengajar khususnya mengingatkan jadwal mengajar.
 
-![Gambar Pengingat Jadwal Mengajar](https://user-images.githubusercontent.com/80617774/132947974-057b2835-67b1-49b6-9014-57037569a159.jpg)
+![Gambar Pengingat Jadwal Mengajar](https://github.com/kiohio707/Pengingat-Jadwal/blob/master/Hasil.JPG)
 
 ## Fitur
 1. Melihat semua daftar jadwal mengajar 
