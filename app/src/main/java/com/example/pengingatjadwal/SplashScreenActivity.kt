@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.pengingatjadwal.Activity.IntroActivity
+import com.example.pengingatjadwal.Activity.LoginActivity
 
 
 class SplashScreenActivity : AppCompatActivity() {

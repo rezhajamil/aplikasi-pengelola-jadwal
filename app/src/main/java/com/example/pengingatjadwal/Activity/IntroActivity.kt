@@ -32,9 +32,15 @@ class IntroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_bantuan)
 
         if (restorePrefsData()) {
-            val intent: Intent = Intent(applicationContext, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            if (checkLogin()){
+                val intent: Intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                val intent: Intent = Intent(applicationContext, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         tabIndicator = findViewById(R.id.tab_indicator)
@@ -134,6 +140,16 @@ class IntroActivity : AppCompatActivity() {
         val preferences: SharedPreferences = applicationContext.getSharedPreferences("myPrefs", MODE_PRIVATE)
         val isIntroOpenedBefore: Boolean = preferences.getBoolean("isIntroOpened", false)
         return isIntroOpenedBefore
+    }
+
+    //Fungsi mengecek Shared Preferences untuk menyimpan informasi bahwa user sudah Login
+    fun checkLogin(): Boolean {
+        val preferences: SharedPreferences = applicationContext.getSharedPreferences("User",0)
+        val email=preferences.getString("email","")
+        if (email.equals("")){
+            return false
+        }
+        return true
     }
 
     // Fungsi Shared Preferences untuk menyimpan informasi bahwa user sudah membuka Intro

@@ -2,17 +2,21 @@ package com.example.pengingatjadwal.Fragment
 
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Adapter.RecBerandaAdapter
+import com.example.pengingatjadwal.Adapter.RecBerlangsungAdapter
 import com.example.pengingatjadwal.Adapter.RecSemuaJadwalItem
 import com.example.pengingatjadwal.Alarm.AlarmHelper
 import com.example.pengingatjadwal.Database.DbHelper
@@ -20,22 +24,25 @@ import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
+class FragmentBeranda: Fragment() {
 
     //Variabel View
     lateinit var rootView: View
     lateinit var tvHari: TextView
     lateinit var tvTanggal: TextView
+    lateinit var tvHalo: TextView
     lateinit var recBeranda: RecyclerView
     lateinit var llKosong: LinearLayout
 
     //Variabel
     lateinit var recAdapter: RecBerandaAdapter
     lateinit var dbHelper: DbHelper
-    lateinit var listJadwalSekarang: MutableList<JadwalModel>
+    lateinit var listJadwalSekarang: ArrayList<JadwalModel>
     lateinit var listJadwalSekarangBeranda: MutableList<JadwalModel>
     lateinit var formKalender: Calendar
     lateinit var alarmHelper: AlarmHelper
@@ -43,9 +50,12 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
     var isAllFieldsChecked: Boolean = false
     val formatNamaHari = SimpleDateFormat("EEEE")
     val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
-    val dateFormat = SimpleDateFormat("dd-MM-yyyy")
+    val dateFormat = SimpleDateFormat("dd-M-yyyy")
     val timeFormat = SimpleDateFormat("HH:mm")
-    val hariIni = Date()
+    var hariIni = Date()
+
+
+    private lateinit var mDatabaseQuery: Query
 
 
     override fun onCreateView(
@@ -56,9 +66,8 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         rootView = inflater.inflate(R.layout.fragment_beranda, null, false)
 
         initView()
-
-        getTodaySchedule()
-        setRecData()
+        getAllJadwalFromFirebase()
+        checkEmptySchedule()
 
         return rootView
     }
@@ -69,6 +78,7 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         recBeranda = rootView.findViewById(R.id.rec_beranda)
         tvHari = rootView.findViewById(R.id.tv_hari_beranda)
         tvTanggal = rootView.findViewById(R.id.tv_tanggal_beranda)
+        tvHalo=rootView.findViewById(R.id.tv_halo)
         llKosong = rootView.findViewById(R.id.ll_jadwal_kosong_beranda)
 
         alarmHelper = AlarmHelper(requireActivity())
@@ -78,30 +88,12 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         recBeranda.layoutManager = LinearLayoutManager(requireContext())
 
         setDayName()
+        val preferences: SharedPreferences? = context?.getSharedPreferences("User",0)
+        val email= preferences?.getString("email","")
         tvTanggal.text = "${formatTanggal.format(hariIni)}"
-    }
+        tvHalo.text="Halo ${email}".uppercase()
 
-    //Fungsi Ngeset Data ke Adapter
-    fun setRecData() {
-        if (listJadwalSekarangBeranda.size == 0) {
-            llKosong.visibility = View.VISIBLE
-        } else {
-            llKosong.visibility = View.GONE
-        }
-        recAdapter = RecBerandaAdapter(listJadwalSekarangBeranda,this, 1)
-        recBeranda.adapter = recAdapter
-    }
-
-    //Fungsi Mengambil Data Jadwal Hari Ini dari DB
-    fun getTodaySchedule() {
-        listJadwalSekarang = dbHelper.getAllTodaySchedule()
-
-        listJadwalSekarangBeranda = dbHelper.getAllTodayScheduleBeranda()
-
-        for (jadwalModel in listJadwalSekarang) {
-            onDelete(jadwalModel.id)
-        }
-
+        getAllJadwalFromFirebase()
     }
 
     //Fungsi Ubah Nama Hari
@@ -118,130 +110,72 @@ class FragmentBeranda: Fragment(), RecSemuaJadwalItem {
         return hari
     }
 
-    //Fungsi Hapus Data (sumber: Interface)
-    override fun onDelete(id: Int) {
-        dbHelper.deleteSchedule(id)
-    }
-
-    //Fungsi Perbarui Data (sumber: Interface)
-    override fun onUpdate(jadwalModel: JadwalModel) {
-        val btnDoneScheduleView = LayoutInflater.from(activity)
-            .inflate(R.layout.view_btm_sheet_selesaikan_jadwal, null, false)
-
-        val edtCatatan = btnDoneScheduleView.findViewById<EditText>(R.id.edt_catatan_view_btm_selesai_mengajar)
-        val mbtSelesai = btnDoneScheduleView.findViewById<MaterialButton>(R.id.mbt_selesai_view_btm_selesai_mengajar)
-
-        val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
-
-        val myDate: Date = dateFormat.parse(jadwalModel.tanggal)
-        val myTime: Date = timeFormat.parse(jadwalModel.waktu)
-        calendar.time = myDate
-        calendar.add(Calendar.DAY_OF_MONTH, +7)
-
-        val newDate: Date = calendar.time
-
-        val kalendar: Calendar = Calendar.getInstance()
-        kalendar.time = newDate
-        val dayOfMonth: Int = kalendar.get(Calendar.DAY_OF_MONTH)
-        val month: Int = kalendar.get(Calendar.MONTH)
-        val year: Int = kalendar.get(Calendar.YEAR)
-        formKalender[Calendar.DAY_OF_MONTH] = dayOfMonth
-        formKalender[Calendar.MONTH] = month
-        formKalender[Calendar.YEAR] = year
-
-        val kalwaktu: Calendar = Calendar.getInstance()
-        kalendar.time = myTime
-        val hourOfDay: Int = kalwaktu.get(Calendar.HOUR_OF_DAY)
-        val minute: Int = kalwaktu.get(Calendar.MINUTE)
-
-        formKalender[Calendar.HOUR_OF_DAY] = hourOfDay
-        formKalender[Calendar.MINUTE] = minute
-        formKalender[Calendar.SECOND] = 0
-        formKalender[Calendar.MILLISECOND] = 0
-
-        btmSheetDialog.setContentView(btnDoneScheduleView)
-        btmSheetDialog.show()
-
-        mbtSelesai.setOnClickListener {
-            if(edtCatatan.length() == 0) {
-                edtCatatan.error = "Wajib Diisi"
-            } else {
-                val dialogBuilder = AlertDialog.Builder(context)
-                dialogBuilder
-                    .setIcon(R.drawable.ic_warning_biru)
-                    .setTitle("Perhatian")
-                    .setMessage("Jadwalkan Kembali Untuk Minggu Depan?")
-                    .setPositiveButton("Iya") {dialog, which ->
-                        saveDataToDb(
-                            jadwalModel.mapel,
-                            jadwalModel.kelas,
-                            jadwalModel.hari,
-                            dateFormat.format(newDate),
-                            jadwalModel.waktu
-                        )
-                        saveDataToDbBeranda(
-                            jadwalModel.mapel,
-                            jadwalModel.kelas,
-                            jadwalModel.hari,
-                            dateFormat.format(newDate),
-                            jadwalModel.waktu
-                        )
-
-                        dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
-                        btmSheetDialog.dismiss()
-                        getTodaySchedule()
-                        setRecData()
+    private fun getAllJadwalFromFirebase() {
+        mDatabaseQuery= FirebaseDatabase.getInstance().getReference("Jadwal")
+        listJadwalSekarang= ArrayList<JadwalModel>()
+        var today=dateFormat.format(hariIni)
+        mDatabaseQuery.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listJadwalSekarang.clear()
+                for(getdataSnapshot in snapshot.children){
+                    var jadwal=getdataSnapshot.getValue(JadwalModel::class.java)
+                    if (jadwal?.tanggal==today){
+                        listJadwalSekarang.add(jadwal!!)
                     }
-                    .setNegativeButton("Tidak") { dialog, which ->
-                        dbHelper.updateScheduleBeranda(jadwalModel.id, jadwalModel.mapel, jadwalModel.kelas,jadwalModel.hari, jadwalModel.tanggal, jadwalModel.waktu,"2", edtCatatan.text.toString())
-                        btmSheetDialog.dismiss()
-                        getTodaySchedule()
-                        setRecData()
+
+                }
+                if (recBeranda!=null){
+                    recAdapter = RecBerandaAdapter(listJadwalSekarang){data->
+                        val btnDoneScheduleView = LayoutInflater.from(activity)
+                            .inflate(R.layout.view_btm_sheet_selesaikan_jadwal, null, false)
+
+                        val edtCatatan = btnDoneScheduleView.findViewById<EditText>(R.id.edt_catatan_view_btm_selesai_mengajar)
+                        val mbtSelesai = btnDoneScheduleView.findViewById<MaterialButton>(R.id.mbt_selesai_view_btm_selesai_mengajar)
+
+                        val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
+
+                        btmSheetDialog.setContentView(btnDoneScheduleView)
+                        btmSheetDialog.show()
+
+                        mbtSelesai.setOnClickListener {
+                            if(edtCatatan.length() == 0) {
+                                edtCatatan.error = "Wajib Diisi"
+                            } else {
+                                val refJadwal= FirebaseDatabase.getInstance().getReference("Jadwal")
+                                var jadwal=JadwalModel()
+                                jadwal.id=data.id
+                                jadwal.kegiatan=data.kegiatan
+                                jadwal.tim=data.tim
+                                jadwal.hari=data.hari
+                                jadwal.tanggal=data.tanggal
+                                jadwal.waktu=data.waktu
+                                jadwal.status=1
+                                jadwal.catatan=edtCatatan.text.toString()
+
+                                refJadwal.child(data.id).setValue(jadwal)
+
+                                btmSheetDialog.dismiss()
+                            }
+                        }
                     }
-                val dialog = dialogBuilder.create()
-                dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_bg)
-                dialog.show()
+                    recBeranda.adapter= recAdapter
+                }
+                checkEmptySchedule()
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context,""+error.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    fun checkEmptySchedule() {
+        if (listJadwalSekarang.size == 0) {
+            llKosong.visibility = View.VISIBLE
+        } else {
+            llKosong.visibility = View.GONE
         }
-        getTodaySchedule()
-        setRecData()
     }
 
-    //Fungsi Simpan Data ke DB tbBeranda
-    fun saveDataToDbBeranda(mapel: String, kelas: String, hari: String, tanggal: String, waktu: String) {
-        val values = ContentValues()
 
-        values.put("mapel", mapel)
-        values.put("kelas", kelas)
-        values.put("hari", hari)
-        values.put("tanggal", tanggal)
-        values.put("waktu", waktu)
-        values.put("status", "0")
-        values.put("catatan", "0")
-
-        dbHelper.saveNewScheduleBeranda(values)
-
-        val waktu = waktu.split(":")
-
-        alarmHelper.setAlarm(0, formKalender)
-    }
-
-    //Fungsi Simpan Data ke DB tbJadwal
-    fun saveDataToDb(mapel: String, kelas: String, hari: String, tanggal: String, waktu: String) {
-        val values = ContentValues()
-
-        values.put("mapel", mapel)
-        values.put("kelas", kelas)
-        values.put("hari", hari)
-        values.put("tanggal", tanggal)
-        values.put("waktu", waktu)
-        values.put("status", "0")
-        values.put("catatan", "0")
-
-        dbHelper.saveNewSchedule(values)
-
-        val waktu = waktu.split(":")
-
-        alarmHelper.setAlarm(0, formKalender)
-    }
 }

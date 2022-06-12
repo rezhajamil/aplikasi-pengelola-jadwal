@@ -1,6 +1,7 @@
 package com.example.pengingatjadwal.Activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.view.menu.MenuBuilder
 import com.example.pengingatjadwal.Fragment.FragmentBeranda
@@ -74,6 +76,15 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
                 R.id.menu_tentang -> run {
                     val intentMenuTentang = Intent(applicationContext, TentangActivity::class.java)
                     startActivity(intentMenuTentang)
+                }
+                R.id.menu_logout->run{
+                    val sharedPreferences: SharedPreferences = getSharedPreferences("User",0)
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    editor.clear().commit()
+
+                    Toast.makeText(applicationContext,"Logout Success",Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(applicationContext,LoginActivity::class.java))
+                    finish()
                 }
             }
             true

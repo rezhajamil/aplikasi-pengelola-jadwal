@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "315059842252",
+    "project_id": "pengingat-jadwal-10cf2",
+    "storage_bucket": "pengingat-jadwal-10cf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315059842252:android:26c6c62662bddf177ba669",
+        "android_client_info": {
+          "package_name": "com.example.pengingatjadwal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315059842252-m6ledvnkgkb0ehmmk1b7nuhr37iad03q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmrfchbrp5fBcCcMftu76rokQ5FvF4E04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315059842252-m6ledvnkgkb0ehmmk1b7nuhr37iad03q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

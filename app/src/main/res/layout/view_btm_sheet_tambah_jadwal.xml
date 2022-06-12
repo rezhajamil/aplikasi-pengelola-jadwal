@@ -24,11 +24,11 @@
         android:layout_height="wrap_content" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_mapel_tambah_jadwal"
+            android:id="@+id/edt_kegiatan_tambah_jadwal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="Pilih Mata Pelajaran"/>
+            android:hint="Pilih Kegiatan"
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,11 +41,11 @@
         android:layout_height="wrap_content" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_kelas_tambah_jadwal"
+            android:id="@+id/edt_tim_tambah_jadwal"
             android:layout_width="match_parent"
-            android:inputType="text"
             android:layout_height="wrap_content"
-            android:hint="Pilih Kelas"/>
+            android:hint="Pilih Tim"
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,17 +97,17 @@
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:visibility="gone"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edt_hari_tambah_jadwal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="time"
-        android:hint="Pilih Waktu"/>
+        android:layout_marginTop="20dp"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_hari_tambah_jadwal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pilih Waktu"
+            android:inputType="time" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

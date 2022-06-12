@@ -4,7 +4,8 @@ import com.example.pengingatjadwal.Model.JadwalModel
 
 interface RecSemuaJadwalItem {
 
-    fun onDelete(id: Int)
+
+    fun onDelete(id: String)
 
     fun onUpdate(jadwalModel: JadwalModel)
 

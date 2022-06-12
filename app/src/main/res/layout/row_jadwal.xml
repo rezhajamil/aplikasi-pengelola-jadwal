@@ -37,7 +37,7 @@
                     app:srcCompat="@drawable/ic_mapel" />
 
                 <TextView
-                    android:id="@+id/tv_mapel_berlangsung"
+                    android:id="@+id/tv_kegiatan_berlangsung"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -135,7 +135,7 @@
                     app:srcCompat="@drawable/ic_kelas" />
 
                 <TextView
-                    android:id="@+id/tv_kelas_berlangsung"
+                    android:id="@+id/tv_tim_berlangsung"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

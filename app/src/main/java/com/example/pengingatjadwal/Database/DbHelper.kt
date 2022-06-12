@@ -3,10 +3,8 @@ package com.example.pengingatjadwal.Database
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import android.database.sqlite.SQLiteCursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import android.widget.Toast
 import com.example.pengingatjadwal.Model.JadwalModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +32,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add(
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -66,7 +64,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add(
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -98,7 +96,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add(
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -131,7 +129,7 @@ class DbHelper(val context: Context) {
             do {
                 schedules.add(
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -178,13 +176,16 @@ class DbHelper(val context: Context) {
 
         cursor = db.rawQuery("SELECT * FROM tbJadwal WHERE tanggal LIKE '${formatHari.format(hariIni)}' AND status != 2 ORDER BY waktu ASC", null)
 
+//        Log.v("jadwals",formatHari.format(hariIni))
+//        Log.v("jadwals", cursor.toString())
+//        Log.v("jadwals", "SELECT * FROM tbJadwal WHERE tanggal LIKE '${formatHari.format(hariIni)}' AND status != 2 ORDER BY waktu ASC")
         cursor.moveToFirst()
 
         if (cursor.count > 0) {
             do {
                 jadwal.add (
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -218,7 +219,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add (
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -249,7 +250,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add (
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -280,7 +281,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add (
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -310,7 +311,7 @@ class DbHelper(val context: Context) {
             do {
                 jadwal.add (
                     JadwalModel(
-                        cursor.getString(0).toInt(),
+                        cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
@@ -345,7 +346,7 @@ class DbHelper(val context: Context) {
     }
 
     //Fungsi Perbarui Data di DB tbBeranda
-    fun updateScheduleBeranda(id: Int, mapel: String, kelas: String, hari: String, tanggal: String,  waktu: String, status: String, catatan: String) {
+    fun updateScheduleBeranda(id: String, mapel: String, kelas: String, hari: String, tanggal: String, waktu: String, status: String, catatan: String) {
         dbConfig = DbConfig(context)
 
         val values = ContentValues()
@@ -364,7 +365,7 @@ class DbHelper(val context: Context) {
     }
 
     //Fungsi Hapus Data dari DB tbJadwal
-    fun deleteSchedule(id: Int) {
+    fun deleteSchedule(id: String) {
         dbConfig = DbConfig(context)
 
         db = dbConfig.writableDatabase

@@ -33,10 +33,23 @@
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/menu/menu_bot_nav_main.xml" value="0.1" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/menu/menu_pop_menu.xml" value="0.20520833333333333" />
         <entry key="..\:/Kerja Praktik/Program/Pengingat Jadwal/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/activity_login.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/activity_main.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/activity_register.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/fragment_beranda.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/fragment_berlangsung.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/fragment_jadwal.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/row_beranda.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/row_jadwal.xml" value="0.4" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/row_riwayat.xml" value="0.14270833333333333" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/view_btm_sheet_selesaikan_jadwal.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/layout/view_btm_sheet_tambah_jadwal.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/menu/menu_bot_nav_main.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/acer/Desktop/Pengingat-Jadwal-Mengajar/app/src/main/res/menu/menu_pop_menu.xml" value="0.23229166666666667" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
