@@ -1,10 +1,7 @@
 package com.example.pengingatjadwal.Fragment
 
-import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Adapter.RecBerandaAdapter
-import com.example.pengingatjadwal.Adapter.RecBerlangsungAdapter
-import com.example.pengingatjadwal.Adapter.RecSemuaJadwalItem
 import com.example.pengingatjadwal.Alarm.AlarmHelper
-import com.example.pengingatjadwal.Database.DbHelper
 import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -41,7 +35,6 @@ class FragmentBeranda: Fragment() {
 
     //Variabel
     lateinit var recAdapter: RecBerandaAdapter
-    lateinit var dbHelper: DbHelper
     lateinit var listJadwalSekarang: ArrayList<JadwalModel>
     lateinit var listJadwalSekarangBeranda: MutableList<JadwalModel>
     lateinit var formKalender: Calendar
@@ -53,7 +46,6 @@ class FragmentBeranda: Fragment() {
     val dateFormat = SimpleDateFormat("dd-M-yyyy")
     val timeFormat = SimpleDateFormat("HH:mm")
     var hariIni = Date()
-
 
     private lateinit var mDatabaseQuery: Query
 
@@ -74,7 +66,6 @@ class FragmentBeranda: Fragment() {
 
     //Fungsi Inisialisasi View
     private fun initView() {
-        dbHelper = DbHelper(requireContext())
         recBeranda = rootView.findViewById(R.id.rec_beranda)
         tvHari = rootView.findViewById(R.id.tv_hari_beranda)
         tvTanggal = rootView.findViewById(R.id.tv_tanggal_beranda)

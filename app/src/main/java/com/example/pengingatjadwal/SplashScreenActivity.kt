@@ -16,7 +16,6 @@ import com.example.pengingatjadwal.Activity.LoginActivity
 class SplashScreenActivity : AppCompatActivity() {
     lateinit var ivLogo: ImageView
     lateinit var tvLogo: TextView
-    lateinit var tvVersi: TextView
     lateinit var fromTop: Animation
     lateinit var fromBottom: Animation
 
@@ -28,15 +27,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
         ivLogo = findViewById(R.id.iv_logo)
         tvLogo = findViewById(R.id.tv_logo)
-        tvVersi = findViewById(R.id.tv_versi)
-        tvVersi = findViewById(R.id.tv_versi)
         fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_animation)
         fromTop = AnimationUtils.loadAnimation(this, R.anim.from_top_animation)
 
         ivLogo.animation = fromTop
         tvLogo.animation = fromBottom
-        tvVersi.animation = fromBottom
-
 
         //Membuat Timer Lottie
         object : CountDownTimer(2000, 1000) {

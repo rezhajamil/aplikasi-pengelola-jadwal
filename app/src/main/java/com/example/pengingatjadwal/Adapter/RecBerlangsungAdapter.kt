@@ -2,6 +2,7 @@ package com.example.pengingatjadwal.Adapter
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,22 +16,25 @@ import com.google.firebase.database.FirebaseDatabase
 class RecBerlangsungAdapter(val listJadwal: MutableList<JadwalModel>,private val listener: (JadwalModel) -> Unit): RecyclerView.Adapter<RecBerlangsungAdapter.ViewHolder>(){
 
     lateinit var contextAdapter: Context
+    var email=""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
         contextAdapter=parent.context
         val inflatedView=layoutInflater.inflate(R.layout.row_jadwal,null,false)
+        val sharedPreferences: SharedPreferences = contextAdapter.getSharedPreferences("User",0)
+        email= sharedPreferences.getString("email","").toString()
         return ViewHolder(inflatedView)
     }
 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setDataToView(listJadwal[position],listener)
+        holder.setDataToView(listJadwal[position],listener,email)
     }
 
     override fun getItemCount(): Int = listJadwal.size
 
-    class ViewHolder(val v : View): RecyclerView.ViewHolder(v) {
+    class ViewHolder(val v: View): RecyclerView.ViewHolder(v) {
 
         val tvKegiatan = v.findViewById<TextView>(R.id.tv_kegiatan_berlangsung)
         val tvJam = v.findViewById<TextView>(R.id.tv_jam_berlangsung)
@@ -39,12 +43,18 @@ class RecBerlangsungAdapter(val listJadwal: MutableList<JadwalModel>,private val
         val mbtUbah = v.findViewById<MaterialButton>(R.id.mbt_ubah_berlangsung)
 
         //Fungsi atur data dari Model
-        fun setDataToView(jadwalModel: JadwalModel, listener: (JadwalModel) -> Unit) {
+        fun setDataToView(jadwalModel: JadwalModel, listener: (JadwalModel) -> Unit, email: String) {
             tvKegiatan.text = jadwalModel.kegiatan
             tvJam.text = jadwalModel.waktu
             tvTanggal.text = jadwalModel.tanggal
             tvTim.text = jadwalModel.tim
 
+
+            if (email.equals("admin@gmail.com")){
+                mbtUbah.visibility=View.VISIBLE
+            }else{
+                mbtUbah.visibility=View.GONE
+            }
             mbtUbah.setOnClickListener {
                 val alertDialogUbah = AlertDialog.Builder(v.context)
 

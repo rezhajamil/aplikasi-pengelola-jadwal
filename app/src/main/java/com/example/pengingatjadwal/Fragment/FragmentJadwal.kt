@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.pengingatjadwal.Adapter.PagerJadwalAdapter
-import com.example.pengingatjadwal.Database.DbHelper
 import com.example.pengingatjadwal.R
 import com.google.android.material.tabs.TabLayout
 

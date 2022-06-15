@@ -73,10 +73,6 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
                     val intentMenuBantuan = Intent(applicationContext, BantuanActivity::class.java)
                     startActivity(intentMenuBantuan)
                 }
-                R.id.menu_tentang -> run {
-                    val intentMenuTentang = Intent(applicationContext, TentangActivity::class.java)
-                    startActivity(intentMenuTentang)
-                }
                 R.id.menu_logout->run{
                     val sharedPreferences: SharedPreferences = getSharedPreferences("User",0)
                     val editor: SharedPreferences.Editor = sharedPreferences.edit()

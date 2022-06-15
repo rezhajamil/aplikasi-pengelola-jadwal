@@ -43,10 +43,10 @@ class AlarmHelper(val activity: Activity) {
     //Fungsi membuat Channel Notifikasi
     fun createNotificationChannel(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val nama: CharSequence = "ChannelPengingatJadwalMengajar"
-            val deskripsi = "Channel Notifikasi untuk Pengingat Jadwal Pengajar"
+            val nama: CharSequence = "ChannelPengingatJadwalKegiatan"
+            val deskripsi = "Channel Notifikasi untuk Pengingat Jadwal Kegiatan"
             val kepentingan = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("ChannelPengingatJadwalMengajar", nama, kepentingan)
+            val channel = NotificationChannel("ChannelPengingatJadwalKegiatan", nama, kepentingan)
 
             val audioAttributes = AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)

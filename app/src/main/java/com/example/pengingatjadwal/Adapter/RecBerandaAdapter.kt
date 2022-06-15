@@ -10,7 +10,7 @@ import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.button.MaterialButton
 
-class RecBerandaAdapter(val listJadwal: MutableList<JadwalModel>,private val listener: (JadwalModel) -> Unit): RecyclerView.Adapter<RecBerandaAdapter.ViewHolder>(){
+class RecBerandaAdapter(val listJadwal: ArrayList<JadwalModel>,private val listener: (JadwalModel) -> Unit): RecyclerView.Adapter<RecBerandaAdapter.ViewHolder>(){
 
 
     lateinit var contextAdapter: Context
@@ -53,9 +53,6 @@ class RecBerandaAdapter(val listJadwal: MutableList<JadwalModel>,private val lis
                 listener(jadwalModel)
             }
         }
-
-
-
     }
 
 }

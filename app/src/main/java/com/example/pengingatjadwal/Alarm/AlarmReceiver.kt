@@ -21,10 +21,10 @@ class AlarmReceiver: BroadcastReceiver() {
         intent!!.flags =  Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
 
-        val builder = NotificationCompat.Builder(context!!, "ChannelPengingatJadwalMengajar")
+        val builder = NotificationCompat.Builder(context!!, "ChannelPengingatJadwalKegiatan")
             .setSmallIcon(R.drawable.ic_logo)
-            .setContentTitle("Persiapan Mengajar")
-            .setContentText("Anda memiliki jadwal mengajar hari ini, tekan disini untuk melihatnya")
+            .setContentTitle("Persiapan Kegiatan")
+            .setContentText("Anda memiliki jadwal kantor hari ini, tekan disini untuk melihatnya")
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

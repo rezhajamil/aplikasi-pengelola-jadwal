@@ -13,11 +13,11 @@
         android:layout_margin="10dp">
 
         <androidx.appcompat.widget.SearchView
-            app:iconifiedByDefault="false"
             android:id="@+id/src_view_jadwal_riwayat"
-            app:queryHint="Cari Kelas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:iconifiedByDefault="false"
+            app:queryHint="Cari Tim" />
 
     </androidx.cardview.widget.CardView>
 

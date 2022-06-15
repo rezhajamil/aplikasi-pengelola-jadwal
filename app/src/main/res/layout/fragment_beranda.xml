@@ -78,10 +78,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16sp"
-            android:text="Tidak Ada Jadwal Mengajar Hari Ini"
-            android:textColor="#256ABE"
             android:fontFamily="@font/gilroy"
+            android:padding="16sp"
+            android:text="Tidak Ada Jadwal  Hari Ini"
+            android:textColor="#256ABE"
             android:textSize="16sp" />
 
     </LinearLayout>

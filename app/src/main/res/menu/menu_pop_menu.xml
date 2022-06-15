@@ -5,10 +5,6 @@
         android:icon="@drawable/ic_bantuan"
         android:title="Bantuan"/>
     <item
-        android:id="@+id/menu_tentang"
-        android:icon="@drawable/ic_tentang"
-        android:title="Tentang"/>
-    <item
         android:id="@+id/menu_logout"
         android:icon="@drawable/ic_tentang"
         android:title="Logout"/>

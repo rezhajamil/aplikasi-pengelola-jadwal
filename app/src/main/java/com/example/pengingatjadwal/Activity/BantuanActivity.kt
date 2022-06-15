@@ -43,7 +43,7 @@ class BantuanActivity : AppCompatActivity() {
         listScreenItem.add(
             ScreenItem(
                 "Kelola Jadwal",
-                "Tambah, Ubah, dan Hapus Data Jadwal Mengajar Anda",
+                "Tambah, Ubah, dan Hapus Data Jadwal Kantor Anda",
                 "*Agar aplikasi berjalan lancar harap mengelola jadwal terlebih dahulu",
                 R.drawable.ic_kelola_jadwal
             )
@@ -59,7 +59,7 @@ class BantuanActivity : AppCompatActivity() {
         listScreenItem.add(
             ScreenItem(
                 "Pengingat Jadwal",
-                "Notifikasi Alarm Pengingat Jadwal Mengajar Anda",
+                "Notifikasi Alarm Pengingat Jadwal Kantor Anda",
                 "*Fitur ini bekerja otomatis seiring dengan data jadwal",
                 R.drawable.ic_alarm
             )
@@ -67,8 +67,8 @@ class BantuanActivity : AppCompatActivity() {
         listScreenItem.add(
             ScreenItem(
                 "Lihat Riwayat",
-                "Catat dan Lihat Setiap Riwayat Mengajar Yang Dilakukan",
-                "*Setiap jadwal mengajar yang diselesaikan akan otomatis tercatat",
+                "Catat dan Lihat Setiap Riwayat Kegiatan Yang Dilakukan",
+                "*Setiap jadwal kantor yang diselesaikan akan otomatis tercatat",
                 R.drawable.ic_history
             )
         )

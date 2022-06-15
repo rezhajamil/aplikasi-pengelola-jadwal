@@ -1,10 +1,8 @@
 package com.example.pengingatjadwal.Fragment.Jadwal
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.AlarmClock
@@ -17,9 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Adapter.RecBerlangsungAdapter
-import com.example.pengingatjadwal.Adapter.RecSemuaJadwalItem
 import com.example.pengingatjadwal.Alarm.AlarmHelper
-import com.example.pengingatjadwal.Database.DbHelper
 import com.example.pengingatjadwal.Model.JadwalModel
 import com.example.pengingatjadwal.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -32,7 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
+class FragmentBerlangsung: Fragment(), com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
     //Variabel View
     lateinit var rootView: View
     lateinit var fabTambah: FloatingActionButton
@@ -52,7 +48,6 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     lateinit var llKosong: LinearLayout
 
     //Variabel
-    lateinit var dbHelper: DbHelper
     lateinit var recAdapter: RecBerlangsungAdapter
     lateinit var listJadwal: ArrayList<JadwalModel>
     lateinit var formKalender: Calendar
@@ -63,6 +58,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
 
     //Firebase
     val refJadwal= FirebaseDatabase.getInstance().getReference("Jadwal")
+    var email=""
     private lateinit var mDatabaseQuery: Query
 
 
@@ -74,16 +70,18 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_berlangsung, null, false)
 
+        val sharedPreferences:SharedPreferences= requireContext().getSharedPreferences("User",0)
+        email= sharedPreferences.getString("email","").toString()
+
         initView()
         getAllJadwalFromFirebase()
+        checkEmptySchedule()
 
         return rootView
     }
 
     //Fungsi Inisialisasi View
     private fun initView() {
-        dbHelper = DbHelper(rootView.context)
-
         alarmHelper = AlarmHelper(requireActivity())
         alarmHelper.createNotificationChannel(requireActivity())
         formKalender = Calendar.getInstance()
@@ -105,6 +103,12 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         fabTambah = rootView.findViewById(R.id.fab_tambah_jadwal)
         fabTambah.setOnClickListener {
             addDataDialog(JadwalModel())
+        }
+
+        if (email.equals("admin@gmail.com")){
+            fabTambah.visibility=View.VISIBLE
+        }else{
+            fabTambah.visibility=View.GONE
         }
 
         chipSemua.setOnClickListener {
@@ -135,6 +139,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
                     recBerlangsung.adapter= recAdapter
                 }
 
+                checkEmptySchedule()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -183,6 +188,7 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
 
     //Fungsi Membuat BottomSheet Dialog untuk Menambahkan Data
     fun addDataDialog(jadwalModel: JadwalModel) {
+        hari=Date().toString()
         val btmSheetView = LayoutInflater.from(requireContext())
             .inflate(R.layout.view_btm_sheet_tambah_jadwal, null, false)
         val btmSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
@@ -237,41 +243,20 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
             edtWaktu.setText(jadwalModel.waktu)
             edtHari.setText(jadwalModel.hari)
 
-            val jadwalBaru = JadwalModel(
-                jadwalModel.id,
-                edtKegiatan.text.toString(),
-                edtTim.text.toString(),
-                edtTanggal.text.toString(),
-                edtWaktu.text.toString(),
-            )
-
             tvJudul.setText("Perbarui")
             mbtTambah.setText("Perbarui")
             mbtTambah.setOnClickListener {
                 isAllFieldsChecked = checkAllFields()
 
                 if (isAllFieldsChecked) {
-//                    dbHelper.updateSchedule(
-//                        jadwalBaru.id,
-//                        edtKegiatan.text.toString(),
-//                        edtTim.text.toString(),
-//                        edtHari.text.toString(),
-//                        edtTanggal.text.toString(),
-//                        edtWaktu.text.toString(),
-//                        "0",
-//                        "0")
-//                    dbHelper.updateScheduleBeranda(
-//                        jadwalBaru.id,
-//                        edtKegiatan.text.toString(),
-//                        edtTim.text.toString(),
-//                        edtHari.text.toString(),
-//                        edtTanggal.text.toString(),
-//                        edtWaktu.text.toString(),
-//                        "0",
-//                        "0")
-//                    setRecData()
-
-
+                    saveDataToDb(
+                        jadwalModel.id,
+                        edtKegiatan.text.toString(),
+                        edtTim.text.toString(),
+                        hari,
+                        edtTanggal.text.toString(),
+                        edtWaktu.text.toString()
+                    )
                     alarmHelper.setAlarm(0, formKalender)
                     btmSheetDialog.dismiss()
                 }
@@ -284,21 +269,13 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
 
                 if (isAllFieldsChecked) {
                     saveDataToDb(
+                        "",
                         edtKegiatan.text.toString(),
                         edtTim.text.toString(),
                         hari,
                         edtTanggal.text.toString(),
                         edtWaktu.text.toString()
                     )
-//                    saveDataToDbBeranda(
-//                        edtKegiatan.text.toString(),
-//                        edtTim.text.toString(),
-//                        edtHari.text.toString(),
-//                        edtTanggal.text.toString(),
-//                        edtWaktu.text.toString()
-//                    )
-//                    setRecData()
-
 
                     checkEmptySchedule()
                     btmSheetDialog.dismiss()
@@ -344,9 +321,14 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
     }
 
     //Fungsi Simpan Data ke DB tbJadwal Firebase
-    fun saveDataToDb(kegiatan: String, tim: String, hari: String, tanggal: String, waktu: String) {
+    fun saveDataToDb(oldId:String="",kegiatan: String, tim: String, hari: String, tanggal: String, waktu: String) {
         var jadwal=JadwalModel()
-        var id=refJadwal.push().key.toString()
+        var id:String;
+        if (oldId.equals("")){
+            id=refJadwal.push().key.toString()
+        }else{
+            id=oldId
+        }
         jadwal.id=id
         jadwal.kegiatan=kegiatan
         jadwal.tim=tim
@@ -437,18 +419,6 @@ class FragmentBerlangsung: Fragment(), RecSemuaJadwalItem, com.wdullaer.material
         timePicker.setAccentColor(Color.parseColor("#136BAF"))
         timePicker.version = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.Version.VERSION_2
         timePicker.show(requireFragmentManager(), "TimePickerDialog")
-    }
-
-    //Fungsi Hapus Data (sumber: Interface)
-    override fun onDelete(id: String) {
-        dbHelper.deleteSchedule(id)
-        checkEmptySchedule()
-        alarmHelper.cancelAlarm(0, requireActivity())
-    }
-
-    //Fungsi Perbarui Data (sumber: Interface)
-    override fun onUpdate(jadwalModel: JadwalModel) {
-        addDataDialog(jadwalModel)
     }
 
     override fun onDateSet(

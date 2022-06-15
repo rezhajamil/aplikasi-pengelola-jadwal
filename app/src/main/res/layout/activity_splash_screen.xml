@@ -9,36 +9,25 @@
     tools:context=".SplashScreenActivity">
 
     <ImageView
-        android:layout_marginTop="150dp"
         android:id="@+id/iv_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_logo" />
+        android:layout_marginTop="150dp"
+        android:src="@drawable/logo" />
 
     <TextView
-        android:layout_marginTop="75dp"
         android:id="@+id/tv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Pengingat\nJadwal Mengajar"
+        android:layout_marginTop="75dp"
+        android:fontFamily="@font/momcake"
+        android:text="Pengingat\nJadwal Kantor"
         android:textAlignment="center"
-        android:fontFamily="@font/momcake"
+        android:textColor="@color/white"
         android:textSize="40sp"
-        android:textColor="@color/white"
         android:textStyle="bold" />
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:id="@+id/tv_versi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ver 1.0"
-        android:fontFamily="@font/momcake"
-        android:textStyle="italic"
-        android:textColor="@color/white"
-        android:layout_gravity="center"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:background="#6086BF"
