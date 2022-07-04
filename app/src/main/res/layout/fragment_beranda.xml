@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="13dp"
+        android:layout_toStartOf="@+id/view_tanggal_beranda"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -20,7 +22,7 @@
             android:fontFamily="@font/momcake"
             android:text="Halo Pengguna"
             android:textColor="#256ABE"
-            android:textSize="28sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,30 +35,30 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:id="@+id/view_tanggal_beranda"
-        android:padding="20dp"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tv_hari_beranda"
-            android:text="Hari Senin"
-            android:textSize="23sp"
-            android:textColor="#3C197E"
-            android:fontFamily="@font/gilroy"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy"
+            android:text="Hari Senin"
+            android:textColor="#3C197E"
+            android:textSize="23sp" />
 
         <TextView
             android:id="@+id/tv_tanggal_beranda"
             android:layout_width="wrap_content"
-            android:textColor="#3C197E"
-            android:fontFamily="@font/gilroy"
             android:layout_height="wrap_content"
-            android:text="23 November 2021"/>
+            android:fontFamily="@font/gilroy"
+            android:text="23 November 2021"
+            android:textColor="#3C197E" />
 
     </LinearLayout>
 

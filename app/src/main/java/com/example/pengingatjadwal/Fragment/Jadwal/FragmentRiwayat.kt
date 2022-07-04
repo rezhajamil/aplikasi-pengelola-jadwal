@@ -1,5 +1,6 @@
 package com.example.pengingatjadwal.Fragment.Jadwal
 
+import android.app.Fragment
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -9,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pengingatjadwal.Adapter.RecRiwayatAdapter
@@ -18,7 +18,7 @@ import com.example.pengingatjadwal.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 
-class FragmentRiwayat: Fragment() {
+class FragmentRiwayat: androidx.fragment.app.Fragment() {
 
     //Variabel View
     lateinit var rootView: View

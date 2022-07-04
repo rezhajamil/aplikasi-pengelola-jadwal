@@ -2,6 +2,7 @@ package com.example.pengingatjadwal.Fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class FragmentBeranda: Fragment() {
     var isAllFieldsChecked: Boolean = false
     val formatNamaHari = SimpleDateFormat("EEEE")
     val formatTanggal = SimpleDateFormat("dd MMMM yyyy")
-    val dateFormat = SimpleDateFormat("dd-M-yyyy")
+    val dateFormat = SimpleDateFormat("d-M-yyyy")
     val timeFormat = SimpleDateFormat("HH:mm")
     var hariIni = Date()
 
@@ -110,6 +111,8 @@ class FragmentBeranda: Fragment() {
                 listJadwalSekarang.clear()
                 for(getdataSnapshot in snapshot.children){
                     var jadwal=getdataSnapshot.getValue(JadwalModel::class.java)
+                    Log.v("beranda", (jadwal?.tanggal==today).toString())
+                    Log.v("beranda", today)
                     if (jadwal?.tanggal==today){
                         listJadwalSekarang.add(jadwal!!)
                     }
